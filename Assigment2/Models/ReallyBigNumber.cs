@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -14,7 +15,7 @@ namespace Assigment2.Models
 
         public bool IsPrime(ReallyBigNumber bigNumber)
         {
-            if (bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 == 0)
+            if (bigNumber.Numbers[bigNumber.Numbers.Count - 1] % 2 == 0)
                 return false;
 
             return true;
@@ -48,13 +49,13 @@ namespace Assigment2.Models
             var overflow = 0;
             for (var i = Numbers.Count - 1; i > 0 - 1; i--)
             {
-                Numbers[i] = Numbers[i]*b;
+                Numbers[i] = Numbers[i] * b;
                 Numbers[i] = Numbers[i] + overflow;
                 overflow = 0;
                 //no overflow
                 if (Numbers[i] <= 9) continue;
                 //the leftmost integer is bigger than 10 causing overflow.
-               
+
                 overflow = 1;
                 Numbers[i] = Numbers[i] - 10;
                 if (i == 0)
@@ -73,7 +74,20 @@ namespace Assigment2.Models
 
         public ReallyBigNumber Subtraction(long b)
         {
-            throw new NotImplementedException();
+            //convert b into list
+            var subtractionList = b.ToString().Select(number => int.Parse(number.ToString())).ToList();
+            for (var i = subtractionList.Count - 1; i >= 0; i--)
+            {
+                if (subtractionList[i] > Numbers[Numbers.Count - i - 1])
+                {
+                    Numbers[Numbers.Count - i - 1] = Numbers[Numbers.Count - i - 1] + 10;
+                    Numbers[Numbers.Count - i - 2] = Numbers[Numbers.Count - i - 2] - 1;
+                }
+
+                Numbers[Numbers.Count - i - 1] = Numbers[Numbers.Count - i - 1] - subtractionList[i];
+
+            }
+            return this;
         }
 
         public ReallyBigNumber Modulo(ReallyBigNumber b)
@@ -95,8 +109,24 @@ namespace Assigment2.Models
             if (a.Numbers == null || this.Numbers == null)
                 return false;
 
-            if (a.Numbers.Count != this.Numbers.Count)
-                return false;
+            if (Numbers.Count != a.Numbers.Count)
+            {
+                //add padding to the smaller one
+                if (Numbers.Count < a.Numbers.Count)
+                {
+                    while (Numbers.Count < a.Numbers.Count)
+                    {
+                        Numbers.Insert(0, 0);
+                    }
+                }
+                else
+                {
+                    while (Numbers.Count > a.Numbers.Count)
+                    {
+                        a.Numbers.Insert(0, 0);
+                    }
+                }
+            }
 
             return !a.Numbers.Where((t, i) => t != this.Numbers[i]).Any();
         }
@@ -114,7 +144,7 @@ namespace Assigment2.Models
             if (b == 1)
                 return this;
 
-            while
+
 
             return this;
         }

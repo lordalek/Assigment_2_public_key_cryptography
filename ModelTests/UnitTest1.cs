@@ -61,5 +61,29 @@ namespace ModelTests
             var doublethatlargeroNUmber = new ReallyBigNumber("24691357802478086504871646951624682685056904684708");
             Assert.IsTrue(doublethatlargeroNUmber.Equals(largenumbero));
         }
+
+        [Test]
+        public void TestSubtraction_2_minus_1()
+        {
+            var number2 = new ReallyBigNumber("2");
+            number2.Subtraction(1);
+            Assert.IsTrue(new ReallyBigNumber("1").Equals(number2));
+        }
+
+        [Test]
+        public void TestSubtraction_11_minus_8()
+        {
+            var number11 = new ReallyBigNumber("11");
+            number11.Subtraction(8);
+            Assert.IsTrue(new ReallyBigNumber("3").Equals(number11));
+        }
+
+        [Test]
+        public void TestSubtraction_100_minus_99()
+        {
+            var number100 = new ReallyBigNumber("100");
+            number100.Subtraction(99);
+            Assert.IsTrue(new ReallyBigNumber("1").Equals(number100));
+        }
     }
 }
