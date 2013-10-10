@@ -16,6 +16,7 @@ namespace Assigment2.Interfaces
         ReallyBigNumber Subtraction(long b);
         ReallyBigNumber Modulo(ReallyBigNumber b);
         ReallyBigNumber Modulo(long b);
+        ReallyBigNumber Division(long b);
         bool Equals(ReallyBigNumber a);
     }
 }

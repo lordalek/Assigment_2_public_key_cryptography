@@ -100,5 +100,23 @@ namespace Assigment2.Models
 
             return !a.Numbers.Where((t, i) => t != this.Numbers[i]).Any();
         }
+
+
+        public ReallyBigNumber Division(long b)
+        {
+            if (b == 0)
+            {
+                Numbers.Clear();
+                Numbers.Add(-1);
+                return this;
+            }
+
+            if (b == 1)
+                return this;
+
+            while
+
+            return this;
+        }
     }
 }
