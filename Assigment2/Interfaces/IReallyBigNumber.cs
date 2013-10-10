@@ -11,10 +11,11 @@ namespace Assigment2.Interfaces
     {
         bool IsPrime(ReallyBigNumber bigNumber);
         ReallyBigNumber GenerateReallyBigNumber();
-        ReallyBigNumber Multiply(ReallyBigNumber a, ReallyBigNumber b);
-        ReallyBigNumber Subtraction(ReallyBigNumber a, ReallyBigNumber b);
-        ReallyBigNumber Subtraction(ReallyBigNumber a, long b);
-        ReallyBigNumber Modulo(ReallyBigNumber a, ReallyBigNumber b);
-        ReallyBigNumber Modulo(ReallyBigNumber a, long b);
+        ReallyBigNumber Multiply(int b);
+        ReallyBigNumber Subtraction(ReallyBigNumber b);
+        ReallyBigNumber Subtraction(long b);
+        ReallyBigNumber Modulo(ReallyBigNumber b);
+        ReallyBigNumber Modulo(long b);
+        bool Equals(ReallyBigNumber a);
     }
 }
