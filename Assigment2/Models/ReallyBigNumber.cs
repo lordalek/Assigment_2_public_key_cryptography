@@ -54,10 +54,14 @@ namespace Assigment2.Models
                 //no overflow
                 if (Numbers[i] <= 9) continue;
                 //the leftmost integer is bigger than 10 causing overflow.
-                if (i == 0)
-                    Numbers.Insert(0, 1);
+               
                 overflow = 1;
                 Numbers[i] = Numbers[i] - 10;
+                if (i == 0)
+                {
+                    overflow = 0;
+                    Numbers.Insert(0, 1);
+                }
             }
             return this;
         }

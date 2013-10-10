@@ -43,5 +43,23 @@ namespace ModelTests
             var number1998 = new ReallyBigNumber("1998");
             Assert.IsTrue(number1998.Equals(numberA));
         }
+
+        [Test]
+        public void TestFor0inMultiply()
+        {
+            var numberA = new ReallyBigNumber("12");
+            numberA.Multiply(0);
+            var number0 = new ReallyBigNumber("0");
+            Assert.IsTrue(numberA.Equals(number0));
+        }
+
+        [Test]
+        public void TestMultiplyWithLaaaargeNumbero()
+        {
+            var largenumbero = new ReallyBigNumber("12345678901239043252435823475812341342528452342354");
+            largenumbero.Multiply(2);
+            var doublethatlargeroNUmber = new ReallyBigNumber("24691357802478086504871646951624682685056904684708");
+            Assert.IsTrue(doublethatlargeroNUmber.Equals(largenumbero));
+        }
     }
 }
