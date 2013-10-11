@@ -96,6 +96,7 @@ namespace Assigment2.Models
                     }
                 }
                 Numbers[Numbers.Count - i - 1] = Numbers[Numbers.Count - i - 1] - subtractionList[i];
+
             }
             return this;
         }
