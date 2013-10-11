@@ -18,6 +18,6 @@ namespace Assigment2.Interfaces
         ReallyBigNumber Modulo(long b);
         ReallyBigNumber Division(long b);
         bool Equals(ReallyBigNumber a);
-        bool Remainder(long a);
+        bool IsBiggerOrEqualThan(long a);
     }
 }

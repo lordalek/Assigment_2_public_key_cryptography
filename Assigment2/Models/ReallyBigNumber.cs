@@ -15,7 +15,7 @@ namespace Assigment2.Models
 
         public bool IsPrime(ReallyBigNumber bigNumber)
         {
-            if (bigNumber.Numbers[bigNumber.Numbers.Count - 1] % 2 == 0)
+            if (bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 == 0)
                 return false;
 
             return true;
@@ -49,7 +49,7 @@ namespace Assigment2.Models
             var overflow = 0;
             for (var i = Numbers.Count - 1; i > 0 - 1; i--)
             {
-                Numbers[i] = Numbers[i] * b;
+                Numbers[i] = Numbers[i]*b;
                 Numbers[i] = Numbers[i] + overflow;
                 overflow = 0;
                 //no overflow
@@ -80,14 +80,43 @@ namespace Assigment2.Models
             {
                 if (subtractionList[i] > Numbers[Numbers.Count - i - 1])
                 {
-                    Numbers[Numbers.Count - i - 1] = Numbers[Numbers.Count - i - 1] + 10;
-                    Numbers[Numbers.Count - i - 2] = Numbers[Numbers.Count - i - 2] - 1;
+                    var preIdex = 0;
+                    if (Numbers[Numbers.Count - i - 1] <= 0)
+                        while (Numbers[Numbers.Count - i - 1 + preIdex] <= 0 &&
+                             (Numbers.Count + preIdex > 1) &&
+                               HasMore10sToLend(i - preIdex))
+                        {
+                            Borrow10(i - preIdex);
+                            preIdex--;
+                        }
+                    else
+                    {
+                        if (Numbers.Count - i > 1)
+                            Borrow10(i);
+                    }
                 }
-
                 Numbers[Numbers.Count - i - 1] = Numbers[Numbers.Count - i - 1] - subtractionList[i];
-
             }
             return this;
+        }
+
+        private bool HasMore10sToLend(int index)
+        {
+            var hasMore10sToLend = false;
+            index = Math.Abs(index);
+            for (var i = Numbers.Count - 2 - index; i >= 0; i--)
+            {
+                if (Numbers[i] > 0)
+                    hasMore10sToLend = true;
+            }
+            return hasMore10sToLend;
+        }
+
+        private void Borrow10(int index)
+        {
+            index = Math.Abs(index);
+            Numbers[Numbers.Count - index - 1] = Numbers[Numbers.Count - index - 1] + 10;
+            Numbers[Numbers.Count - index - 2] = Numbers[Numbers.Count - index - 2] - 1;
         }
 
         public ReallyBigNumber Modulo(ReallyBigNumber b)
@@ -143,7 +172,7 @@ namespace Assigment2.Models
 
             if (b == 1)
                 return this;
-            while (this.Remainder(b))
+            while (this.IsBiggerOrEqualThan(b))
             {
                 this.Subtraction(b);
             }
@@ -152,9 +181,7 @@ namespace Assigment2.Models
         }
 
 
-
-
-        public bool Remainder(long a)
+        public bool IsBiggerOrEqualThan(long a)
         {
             var inputList = a.ToString().Select(number => int.Parse(number.ToString())).ToList();
 
@@ -176,13 +203,23 @@ namespace Assigment2.Models
                     }
                 }
             }
-
-            for (var i = Numbers.Count -1; i >= 0; i--)
+            for (int i = 0; i < Numbers.Count-1; i++)
             {
-                if(inputList[i] > Numbers[i])
-                    return false;
+                if (Numbers[i] == 0 && inputList[i] == 0)
+                {
+                    Numbers.RemoveAt(i);
+                    inputList.RemoveAt(i);
+                }
+                else break;
+                
             }
-            return true;
+            var isBigger = true;
+            for (var i = Numbers.Count - 1; i >= 0; i--)
+            {
+//                if (inputList[i] != 0 && Numbers[i] != 0)
+                isBigger = inputList[i] <= Numbers[i];
+            }
+            return isBigger;
         }
     }
 }

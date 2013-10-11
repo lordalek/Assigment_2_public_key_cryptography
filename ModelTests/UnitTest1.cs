@@ -90,29 +90,54 @@ namespace ModelTests
         public void CheckIsBuggerThaN_1_8()
         {
             var number8 = new ReallyBigNumber("8");
-            Assert.IsTrue(number8.Remainder(1));
+            Assert.IsTrue(number8.IsBiggerOrEqualThan(1));
         }
 
         [Test]
         public void CheckIsBuggerThaN_8_1()
         {
             var number8 = new ReallyBigNumber("1");
-            Assert.IsFalse(number8.Remainder(8));
+            Assert.IsFalse(number8.IsBiggerOrEqualThan(8));
         }
 
         [Test]
         public void TestIfEqualNumbersAreBigger_9_9()
         {
             var number9 = new ReallyBigNumber("9");
-            Assert.IsTrue(number9.Remainder(9));
+            Assert.IsTrue(number9.IsBiggerOrEqualThan(9));
         }
 
         [Test]
-        public void TestIfDivide8by2equals4()
+        public void TestIfDivide8by2equals0()
         {
             var number8 = new ReallyBigNumber("8");
             number8.Division(2);
             Assert.IsTrue(number8.Equals(new ReallyBigNumber("0")));
+        }
+
+        [Test]
+        public void TestRemainerof8_3_should_2()
+        {
+            var number8 = new ReallyBigNumber("8");
+            number8.Division(3);
+            Assert.IsTrue(number8.Equals(new ReallyBigNumber("2")));
+        }
+
+        [Test]
+        public void TestRemainerOfDoubleDigits()
+        {
+            var number88 = new ReallyBigNumber("88");
+            number88.Division(10);
+            Assert.IsTrue(number88.Equals(new ReallyBigNumber("8")));
+        }
+        
+
+        [Test]
+        public void TestRemainerof100_3_should_1()
+        {
+            var number8 = new ReallyBigNumber("100");
+            number8.Division(3);
+            Assert.IsTrue(number8.Equals(new ReallyBigNumber("1")));
         }
     }
 }
