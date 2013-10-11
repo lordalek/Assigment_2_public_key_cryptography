@@ -85,5 +85,34 @@ namespace ModelTests
             number100.Subtraction(99);
             Assert.IsTrue(new ReallyBigNumber("1").Equals(number100));
         }
+
+        [Test]
+        public void CheckIsBuggerThaN_1_8()
+        {
+            var number8 = new ReallyBigNumber("8");
+            Assert.IsTrue(number8.Remainder(1));
+        }
+
+        [Test]
+        public void CheckIsBuggerThaN_8_1()
+        {
+            var number8 = new ReallyBigNumber("1");
+            Assert.IsFalse(number8.Remainder(8));
+        }
+
+        [Test]
+        public void TestIfEqualNumbersAreBigger_9_9()
+        {
+            var number9 = new ReallyBigNumber("9");
+            Assert.IsTrue(number9.Remainder(9));
+        }
+
+        [Test]
+        public void TestIfDivide8by2equals4()
+        {
+            var number8 = new ReallyBigNumber("8");
+            number8.Division(2);
+            Assert.IsTrue(number8.Equals(new ReallyBigNumber("0")));
+        }
     }
 }

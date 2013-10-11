@@ -143,10 +143,46 @@ namespace Assigment2.Models
 
             if (b == 1)
                 return this;
-
-
+            while (this.Remainder(b))
+            {
+                this.Subtraction(b);
+            }
 
             return this;
+        }
+
+
+
+
+        public bool Remainder(long a)
+        {
+            var inputList = a.ToString().Select(number => int.Parse(number.ToString())).ToList();
+
+            if (Numbers.Count != inputList.Count)
+            {
+                //add padding to the smaller one
+                if (Numbers.Count < inputList.Count)
+                {
+                    while (Numbers.Count < inputList.Count)
+                    {
+                        Numbers.Insert(0, 0);
+                    }
+                }
+                else
+                {
+                    while (Numbers.Count > inputList.Count)
+                    {
+                        inputList.Insert(0, 0);
+                    }
+                }
+            }
+
+            for (var i = Numbers.Count -1; i >= 0; i--)
+            {
+                if(inputList[i] > Numbers[i])
+                    return false;
+            }
+            return true;
         }
     }
 }
