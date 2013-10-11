@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Assigment2.Interfaces;
 
 namespace Assigment2.Models
 {
-    class BlumBlumShubGenerator
+    class BlumBlumShubGenerator :IBlumBlumShubGenerator
     {
+        public ReallyBigNumber GeneratePseudoRandomNumber(long seed)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
