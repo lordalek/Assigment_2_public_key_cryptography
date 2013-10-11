@@ -188,7 +188,7 @@ namespace Assigment2.Models
             return a;
         }
 
-        public ReallyBigNumber Division(long b)
+        public ReallyBigNumber Remainder(long b)
         {
             if (b == 0)
             {

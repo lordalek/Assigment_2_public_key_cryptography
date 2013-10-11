@@ -111,7 +111,7 @@ namespace ModelTests
         public void TestIfDivide8by2equals0()
         {
             var number8 = new ReallyBigNumber("8");
-            number8.Division(2);
+            number8.Remainder(2);
             Assert.IsTrue(number8.Equals(new ReallyBigNumber("0")));
         }
 
@@ -119,7 +119,7 @@ namespace ModelTests
         public void TestRemainerof8_3_should_2()
         {
             var number8 = new ReallyBigNumber("8");
-            number8.Division(3);
+            number8.Remainder(3);
             Assert.IsTrue(number8.Equals(new ReallyBigNumber("2")));
         }
 
@@ -127,7 +127,7 @@ namespace ModelTests
         public void TestRemainerOfDoubleDigits()
         {
             var number88 = new ReallyBigNumber("88");
-            number88.Division(10);
+            number88.Remainder(10);
             Assert.IsTrue(number88.Equals(new ReallyBigNumber("8")));
         }
         
@@ -136,7 +136,7 @@ namespace ModelTests
         public void TestRemainerof100_3_should_1()
         {
             var number8 = new ReallyBigNumber("100");
-            number8.Division(3);
+            number8.Remainder(3);
             Assert.IsTrue(number8.Equals(new ReallyBigNumber("1")));
         }
 
@@ -144,7 +144,7 @@ namespace ModelTests
         public void TestRemainderOfTripleDigits()
         {
             var number888 = new ReallyBigNumber("888");
-            number888.Division(10);
+            number888.Remainder(10);
             Assert.IsTrue(number888.Equals(new ReallyBigNumber("8")));
 
         }
@@ -153,7 +153,7 @@ namespace ModelTests
         public void TestRemainderOfTripleDigitsAndTrippleDenominator()
         {
             var number888 = new ReallyBigNumber("888");
-            number888.Division(100);
+            number888.Remainder(100);
             Assert.IsTrue(number888.Equals(new ReallyBigNumber("88")));
 
         }
