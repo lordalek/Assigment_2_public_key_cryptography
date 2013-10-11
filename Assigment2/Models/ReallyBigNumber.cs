@@ -76,6 +76,8 @@ namespace Assigment2.Models
         {
             //convert b into list
             var subtractionList = b.ToString().Select(number => int.Parse(number.ToString())).ToList();
+            if (subtractionList.Count != Numbers.Count)
+                subtractionList = AppendPaddingToList(subtractionList);
             for (var i = subtractionList.Count - 1; i >= 0; i--)
             {
                 if (subtractionList[i] > Numbers[Numbers.Count - i - 1])
@@ -95,7 +97,8 @@ namespace Assigment2.Models
                             Borrow10(i);
                     }
                 }
-                Numbers[Numbers.Count - i - 1] = Numbers[Numbers.Count - i - 1] - subtractionList[i];
+                var idx = i;// Numbers.Count - i;
+                Numbers[idx] = Numbers[idx] - subtractionList[i];
 
             }
             return this;
@@ -161,6 +164,29 @@ namespace Assigment2.Models
             return !a.Numbers.Where((t, i) => t != this.Numbers[i]).Any();
         }
 
+        private List<int> AppendPaddingToList(List<int> a)
+        {
+            if (Numbers.Count != a.Count)
+            {
+                //add padding to the smaller one
+                if (Numbers.Count < a.Count)
+                {
+                    while (Numbers.Count < a.Count)
+                    {
+                        Numbers.Insert(0, 0);
+                    }
+                }
+                else
+                {
+                    while (Numbers.Count > a.Count)
+                    {
+                        a.Insert(0, 0);
+                    }
+                }
+            }
+
+            return a;
+        }
 
         public ReallyBigNumber Division(long b)
         {

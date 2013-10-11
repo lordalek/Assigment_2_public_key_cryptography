@@ -139,5 +139,23 @@ namespace ModelTests
             number8.Division(3);
             Assert.IsTrue(number8.Equals(new ReallyBigNumber("1")));
         }
+
+        [Test]
+        public void TestRemainderOfTripleDigits()
+        {
+            var number888 = new ReallyBigNumber("888");
+            number888.Division(10);
+            Assert.IsTrue(number888.Equals(new ReallyBigNumber("8")));
+
+        }
+
+        [Test]
+        public void TestRemainderOfTripleDigitsAndTrippleDenominator()
+        {
+            var number888 = new ReallyBigNumber("888");
+            number888.Division(100);
+            Assert.IsTrue(number888.Equals(new ReallyBigNumber("88")));
+
+        }
     }
 }
