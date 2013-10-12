@@ -19,5 +19,6 @@ namespace Assigment2.Interfaces
         ReallyBigNumber Remainder(long b);
         bool Equals(ReallyBigNumber a);
         bool IsBiggerOrEqualThan(long a);
+        bool IsSmallerOrEqualThanHalf(ReallyBigNumber b);
     }
 }

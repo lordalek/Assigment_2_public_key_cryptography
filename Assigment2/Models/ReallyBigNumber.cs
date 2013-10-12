@@ -15,10 +15,17 @@ namespace Assigment2.Models
 
         public bool IsPrime(ReallyBigNumber bigNumber)
         {
-            if (bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 == 0)
-                return false;
+            var isPrime = true;
 
-            return true;
+            if (bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 == 0)
+                isPrime = false;
+
+            for (var i = 1; i < bigNumber.Numbers.Count; i++)
+            {
+                
+            }
+
+            return isPrime;
         }
 
         public ReallyBigNumber GenerateReallyBigNumber()
@@ -247,6 +254,12 @@ namespace Assigment2.Models
                 isBigger = inputList[i] <= Numbers[i];
             }
             return isBigger;
+        }
+
+
+        public bool IsSmallerOrEqualThanHalf(ReallyBigNumber b)
+        {
+            throw new NotImplementedException();
         }
     }
 }
