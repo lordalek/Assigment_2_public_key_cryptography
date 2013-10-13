@@ -90,21 +90,21 @@ namespace ModelTests
         public void CheckIsBuggerThaN_1_8()
         {
             var number8 = new ReallyBigNumber("8");
-            Assert.IsTrue(number8.IsBiggerOrEqualThan(1));
+            Assert.IsTrue(number8.IsBiggerOrEqualThan(new ReallyBigNumber("1").Numbers));
         }
 
         [Test]
         public void CheckIsBuggerThaN_8_1()
         {
             var number8 = new ReallyBigNumber("1");
-            Assert.IsFalse(number8.IsBiggerOrEqualThan(8));
+            Assert.IsFalse(number8.IsBiggerOrEqualThan(new ReallyBigNumber("8").Numbers));
         }
 
         [Test]
         public void TestIfEqualNumbersAreBigger_9_9()
         {
             var number9 = new ReallyBigNumber("9");
-            Assert.IsTrue(number9.IsBiggerOrEqualThan(9));
+            Assert.IsTrue(number9.IsBiggerOrEqualThan( new ReallyBigNumber("9").Numbers));
         }
 
         [Test]

@@ -12,13 +12,12 @@ namespace Assigment2.Interfaces
         bool IsPrime(ReallyBigNumber bigNumber);
         ReallyBigNumber GenerateReallyBigNumber();
         ReallyBigNumber Multiply(int b);
-        ReallyBigNumber Subtraction(ReallyBigNumber b);
+        ReallyBigNumber Subtraction(List<int> b);
         ReallyBigNumber Subtraction(long b);
-        ReallyBigNumber Modulo(ReallyBigNumber b);
-        ReallyBigNumber Modulo(long b);
         ReallyBigNumber Remainder(long b);
+        ReallyBigNumber Remainder(ReallyBigNumber b);
         bool Equals(ReallyBigNumber a);
-        bool IsBiggerOrEqualThan(long a);
+        bool IsBiggerOrEqualThan(List<int> a);
         bool IsSmallerOrEqualThanHalf(ReallyBigNumber b);
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Assigment2.Interfaces;
 
 namespace Assigment2.Models
@@ -74,20 +75,13 @@ namespace Assigment2.Models
             return this;
         }
 
-        public ReallyBigNumber Subtraction(ReallyBigNumber b)
+        public ReallyBigNumber Subtraction(List<int> b)
         {
-            throw new NotImplementedException();
-        }
-
-        public ReallyBigNumber Subtraction(long b)
-        {
-            //convert b into list
-            var subtractionList = b.ToString().Select(number => int.Parse(number.ToString())).ToList();
-            if (subtractionList.Count != Numbers.Count)
-                subtractionList = AppendPaddingToList(subtractionList);
-            for (var i = subtractionList.Count - 1; i >= 0; i--)
+            if (b.Count != Numbers.Count)
+              b =  AppendPaddingToList(b);
+            for (var i = b.Count - 1; i >= 0; i--)
             {
-                if (subtractionList[i] > Numbers[Numbers.Count - i - 1])
+                if (b[i] > Numbers[Numbers.Count - i - 1])
                 {
                     var preIdex = 0;
                     if (Numbers[Numbers.Count - i - 1] <= 0)
@@ -105,10 +99,19 @@ namespace Assigment2.Models
                     }
                 }
                 var idx = i;// Numbers.Count - i;
-                Numbers[idx] = Numbers[idx] - subtractionList[i];
+                Numbers[idx] = Numbers[idx] - b[i];
 
             }
             return this;
+        }
+
+        public ReallyBigNumber Subtraction(long b)
+        {
+            //convert b into list
+            var subtractionList = b.ToString().Select(number => int.Parse(number.ToString())).ToList();
+            if (subtractionList.Count != Numbers.Count)
+                subtractionList = AppendPaddingToList(subtractionList);
+            return Subtraction(subtractionList);
         }
 
         private bool HasMore10sToLend(int index)
@@ -206,43 +209,42 @@ namespace Assigment2.Models
 
             if (b == 1)
                 return this;
-            while (this.IsBiggerOrEqualThan(b))
+            var tempB = new ReallyBigNumber(b.ToString());
+            
+            return Remainder(tempB);
+        }
+
+        public ReallyBigNumber Remainder(ReallyBigNumber b)
+        {
+            if (b.Numbers.Count <=  0)
             {
-                this.Subtraction(b);
+                Numbers.Clear();
+                Numbers.Add(-1);
+                return this;
+            }
+
+            while (this.IsBiggerOrEqualThan(b.Numbers))
+            {
+                this.Subtraction(b.Numbers);
             }
 
             return this;
         }
 
 
-        public bool IsBiggerOrEqualThan(long a)
+        public bool IsBiggerOrEqualThan(List<int> a)
         {
-            var inputList = a.ToString().Select(number => int.Parse(number.ToString())).ToList();
-
-            if (Numbers.Count != inputList.Count)
+          
+            if (Numbers.Count != a.Count)
             {
-                //add padding to the smaller one
-                if (Numbers.Count < inputList.Count)
-                {
-                    while (Numbers.Count < inputList.Count)
-                    {
-                        Numbers.Insert(0, 0);
-                    }
-                }
-                else
-                {
-                    while (Numbers.Count > inputList.Count)
-                    {
-                        inputList.Insert(0, 0);
-                    }
-                }
+                AppendPaddingToList(a);
             }
             for (int i = 0; i < Numbers.Count-1; i++)
             {
-                if (Numbers[i] == 0 && inputList[i] == 0)
+                if (Numbers[i] == 0 && a[i] == 0)
                 {
                     Numbers.RemoveAt(i);
-                    inputList.RemoveAt(i);
+                    a.RemoveAt(i);
                 }
                 else break;
                 
@@ -251,7 +253,7 @@ namespace Assigment2.Models
             for (var i = Numbers.Count - 1; i >= 0; i--)
             {
 //                if (inputList[i] != 0 && Numbers[i] != 0)
-                isBigger = inputList[i] <= Numbers[i];
+                isBigger = a[i] <= Numbers[i];
             }
             return isBigger;
         }
