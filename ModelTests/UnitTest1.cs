@@ -219,5 +219,11 @@ namespace ModelTests
         {
             Assert.IsTrue(new ReallyBigNumber("1000").IsSmallerOrEqualThanHalf(new ReallyBigNumber("400")));
         }
+
+        [Test]
+        public void Test4000000435267463257667835646757736467578IsSmallerThan5123000435267463257667835646757736467578()
+        {
+            Assert.IsTrue(new ReallyBigNumber("88888888888888435267463257667835646757736467578").IsSmallerOrEqualThanHalf(new ReallyBigNumber("4000000435267463257667835646757736467578")));
+        }
     }
 }

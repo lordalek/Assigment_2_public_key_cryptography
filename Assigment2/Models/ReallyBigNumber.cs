@@ -17,7 +17,7 @@ namespace Assigment2.Models
 
         public bool IsPrime(ReallyBigNumber bigNumber)
         {
-            bool isPrime = bigNumber.Numbers[bigNumber.Numbers.Count - 1] % 2 != 0;
+            bool isPrime = bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 != 0;
 
             var idx = new ReallyBigNumber("3");
             while (IsSmallerOrEqualThanHalf(idx))
@@ -58,7 +58,7 @@ namespace Assigment2.Models
             var overflow = 0;
             for (var i = Numbers.Count - 1; i > 0 - 1; i--)
             {
-                Numbers[i] = Numbers[i] * b;
+                Numbers[i] = Numbers[i]*b;
                 Numbers[i] = Numbers[i] + overflow;
                 overflow = 0;
                 //no overflow
@@ -99,9 +99,8 @@ namespace Assigment2.Models
                             Borrow10(i);
                     }
                 }
-                var idx = i;// Numbers.Count - i;
+                var idx = i; // Numbers.Count - i;
                 Numbers[idx] = Numbers[idx] - b[i];
-
             }
             return this;
         }
@@ -207,7 +206,6 @@ namespace Assigment2.Models
 
         public bool IsBiggerOrEqualThan(List<int> a)
         {
-
             if (Numbers.Count != a.Count)
             {
                 a = AppendPaddingToList(a);
@@ -233,48 +231,101 @@ namespace Assigment2.Models
 
         public bool IsSmallerOrEqualThanHalf(ReallyBigNumber b)
         {
-            var isSmaller = false;
+            var isSmaller = true;
 
-            if (b.Numbers.Count > Numbers.Count / 2 + 1)
-                return false;
+//            if (b.Numbers.Count > Numbers.Count/2 + 1)
+//                return false;
             if (b.Numbers.Count != Numbers.Count)
                 b.Numbers = AppendPaddingToList(b.Numbers);
-            if (Numbers.Count % 2 == 0)
+
+            var idx = 0;
+            var prevWasSmall = false;
+            while (idx < Numbers.Count)
             {
-                for (var i = Numbers.Count / 2; i < b.Numbers.Count; i++)
+                if (idx <= Numbers.Count)
                 {
-                    if (Numbers.Count > 1)
+                    if (Numbers.Count > 0 && idx > 0)
                     {
-                        if (b.Numbers[i] + (b.Numbers[i - 1] * 10) >= Numbers[i] + (Numbers[i - 1] * 10)) break;
-                        isSmaller = true;
-                        break;
+                        if (b.Numbers[idx] + (b.Numbers[idx - 1]*10) <= Numbers[idx] + (Numbers[idx - 1]*10))
+                        {
+                            idx++;
+                            prevWasSmall = true;
+                            continue;
+                        }
+                        else
+                        {
+                            if (prevWasSmall)
+                            {
+                                if(Numbers.Count % 2 == 0)
+                                break;
+                                else
+                                {
+                                    if (Numbers[idx - 1] == 0)
+                                    {
+                                        if(b.Numbers[idx] + (b.Numbers[idx] * 10) >= Numbers[idx] + 99)
+                                            break;
+                                    }
+                                }
+                            }
+                        }
                     }
                     else
                     {
-                        isSmaller = Numbers[0] >= b.Numbers[0];
+                        if (b.Numbers[0] <= Numbers[0])
+                        { idx++; continue; }
                     }
-                }
-            }
-            else
-            {
-                var bValue = 0;
-                var NValue = 0;
-                for (var i = Numbers.Count / 2; i < b.Numbers.Count; i++)
-                {
-                    if (b.Numbers[i] < Numbers[i])
-                    {
-                        isSmaller = true;
-                        break;
-                    }
-                    if (b.Numbers[i] != Numbers[i]) continue;
-                    bValue += b.Numbers[i] * 10;
-                    NValue += Numbers[i] * 10;
-
-                    if (bValue >= NValue) continue;
-                    isSmaller = true;
+                    isSmaller = false;
                     break;
                 }
+                else
+                {
+                }
+                if ((b.Numbers[idx] + (b.Numbers[idx]*10) >= Numbers[idx] + (Numbers[idx]*10)))
+                {
+                    isSmaller = false;
+                    break;
+                }
+                else
+                {
+                }
+                idx++;
             }
+            //if (Numbers.Count % 2 == 0)
+            //{
+            //    for (var i = Numbers.Count / 2; i < b.Numbers.Count; i++)
+            //    {
+            //        if (Numbers.Count > 1)
+            //        {
+            //            if (b.Numbers[i] + (b.Numbers[i - 1] * 10) >= Numbers[i] + (Numbers[i - 1] * 10)) break;
+            //            isSmaller = true;
+            //            break;
+            //        }
+            //        else
+            //        {
+            //            isSmaller = Numbers[0] >= b.Numbers[0];
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    var bValue = 0;
+            //    var NValue = 0;
+            //    for (var i = Numbers.Count / 2; i < b.Numbers.Count; i++)
+            //    {
+            //        if (b.Numbers[i] < Numbers[i])
+            //        {
+            //            isSmaller = true;
+            //            break;
+            //        }
+            //        if (b.Numbers[i] != Numbers[i]) continue;
+            //        bValue += b.Numbers[i] * 10;
+            //        NValue += Numbers[i] * 10;
+
+            //        if (bValue >= NValue) continue;
+            //        isSmaller = true;
+            //        break;
+            //    }
+            //}
             return isSmaller;
         }
 
