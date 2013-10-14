@@ -19,7 +19,8 @@ namespace Assigment2.Models
         public bool IsPrime(ReallyBigNumber bigNumber)
         {
             var isPrime = bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 != 0;
-
+            if (!isPrime)
+                return false;
             var idx = new ReallyBigNumber("3");
             while (IsSmallerOrEqualThanHalf(idx))
             {
@@ -65,9 +66,12 @@ namespace Assigment2.Models
                 //no overflow
                 if (Numbers[i] <= 9) continue;
                 //the leftmost integer is bigger than 10 causing overflow.
-
-                overflow = 1;
-                Numbers[i] = Numbers[i] - 10;
+                while (Numbers[i] > 9)
+                {
+                    overflow++;
+                    Numbers[i] = Numbers[i] - 10;
+                }
+                
                 if (i == 0)
                 {
                     overflow = 0;
@@ -98,6 +102,7 @@ namespace Assigment2.Models
                     {
                         if (Numbers.Count - i > 1)
                             Borrow10(i);
+                      
                     }
                 }
                 var idx = i; // Numbers.Count - i;
@@ -372,20 +377,25 @@ namespace Assigment2.Models
         }
 
 
-        public ReallyBigNumber GetRandomNumber(long seed, int numberOfDigits)
+        public ReallyBigNumber GetRandomPrime(long seed, int numberOfDigits)
         {
+            var randomNumber = new ReallyBigNumber("2");
             var a = 16807; // 7^5
             var m = new ReallyBigNumber((Math.Pow(2, 32) - 1).ToString());
             var firstXn = new ReallyBigNumber(seed.ToString());
             firstXn.Multiply(a);
             firstXn.Remainder(m);
-            var randomNumber = new ReallyBigNumber("1") {Numbers = firstXn.Numbers};
-            for (int i = 0; i <= numberOfDigits; i++)
+            while (!randomNumber.IsPrime(randomNumber))
             {
-                var XnPluss1 = new ReallyBigNumber(randomNumber.Numbers[i].ToString());
-                XnPluss1.Multiply(a);
-                XnPluss1.Remainder(m);
-                randomNumber.Numbers.Add(XnPluss1.Numbers[XnPluss1.Numbers.Count - 1]);
+                randomNumber.Numbers.Clear();
+                randomNumber.Numbers.Add(firstXn.Numbers[firstXn.Numbers.Count -1]);
+                for (int i = 0; i <= numberOfDigits; i++)
+                {
+                    var XnPluss1 = new ReallyBigNumber(randomNumber.Numbers[i].ToString());
+                    XnPluss1.Multiply(a);
+                    XnPluss1.Remainder(m);
+                    randomNumber.Numbers.Add(XnPluss1.Numbers[XnPluss1.Numbers.Count - 1]);
+                }
             }
             return randomNumber;
         }

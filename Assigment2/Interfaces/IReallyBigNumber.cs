@@ -21,7 +21,7 @@ namespace Assigment2.Interfaces
         bool Equals(ReallyBigNumber a);
         bool IsBiggerOrEqualThan(List<int> a);
         bool IsSmallerOrEqualThanHalf(ReallyBigNumber b);
-        ReallyBigNumber GetRandomNumber(long seed, int numberOfDigits);
+        ReallyBigNumber GetRandomPrime(long seed, int numberOfDigits);
         string ToString();
     }
 }

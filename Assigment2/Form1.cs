@@ -28,15 +28,30 @@ namespace Assigment2
 
         private void btnGenerateRandomPrimeNumber_Click(object sender, EventArgs e)
         {
-            if (this.cbDecimals.SelectedItem == null)
-                return;
-            var seed = -1L;
-            long.TryParse(this.txtSeed.Text, out seed);
-            if (this.txtSeed.Text.Length <= 0 || seed <= 0)
-                return;
-            var psRandomNumberino = new ReallyBigNumber("1").GetRandomNumber(seed,(int) this.cbDecimals.SelectedItem);
-            this.rTxtPrimeNumber.Text = psRandomNumberino.ToString();
-            this.rTxtPrimeNumber.Tag = psRandomNumberino;
+            try
+            {
+                this.rTxtPrimeNumber.Text = string.Empty;
+                this.rTxtPrimeNumber.Tag = null;
+                if (this.cbDecimals.SelectedItem == null)
+                    return;
+                var seed = -1L;
+                long.TryParse(this.txtSeed.Text, out seed);
+                if (this.txtSeed.Text.Length <= 0 || seed <= 0)
+                    return;
+                this.Cursor = Cursors.WaitCursor;
+                var psRandomNumberino = new ReallyBigNumber("1").GetRandomPrime(seed,
+                    (int) this.cbDecimals.SelectedItem);
+                this.rTxtPrimeNumber.Text = psRandomNumberino.ToString();
+                this.rTxtPrimeNumber.Tag = psRandomNumberino;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
         }
     }
 }
