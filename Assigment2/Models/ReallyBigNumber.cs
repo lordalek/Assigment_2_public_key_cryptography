@@ -13,17 +13,18 @@ namespace Assigment2.Models
     public class ReallyBigNumber : IReallyBigNumber
     {
         public List<int> Numbers = new List<int>();
+        public long DividentSummation { get; set; }
 
         public bool IsPrime(ReallyBigNumber bigNumber)
         {
-            var isPrime = true;
+            bool isPrime = bigNumber.Numbers[bigNumber.Numbers.Count - 1] % 2 != 0;
 
-            if (bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 == 0)
-                isPrime = false;
-
-            for (var i = 1; i < bigNumber.Numbers.Count; i++)
+            var idx = new ReallyBigNumber("3");
+            while (IsSmallerOrEqualThanHalf(idx))
             {
-                
+                if (Remainder(idx).Numbers[Numbers.Count - 1] == 0)
+                    isPrime = false;
+                idx.Addition(2);
             }
 
             return isPrime;
@@ -57,7 +58,7 @@ namespace Assigment2.Models
             var overflow = 0;
             for (var i = Numbers.Count - 1; i > 0 - 1; i--)
             {
-                Numbers[i] = Numbers[i]*b;
+                Numbers[i] = Numbers[i] * b;
                 Numbers[i] = Numbers[i] + overflow;
                 overflow = 0;
                 //no overflow
@@ -78,16 +79,16 @@ namespace Assigment2.Models
         public ReallyBigNumber Subtraction(List<int> b)
         {
             if (b.Count != Numbers.Count)
-              b =  AppendPaddingToList(b);
+                b = AppendPaddingToList(b);
             for (var i = b.Count - 1; i >= 0; i--)
             {
                 if (b[i] > Numbers[Numbers.Count - i - 1])
                 {
                     var preIdex = 0;
                     if (Numbers[Numbers.Count - i - 1] <= 0)
-                        while (Numbers[Numbers.Count - i - 1 + preIdex] <= 0 &&
-                             (Numbers.Count + preIdex > 1) &&
-                               HasMore10sToLend(i - preIdex))
+                        while (Numbers[Numbers.Count - i - 1 + preIdex] <= 0
+                               && (Numbers.Count + preIdex > 1)
+                               && HasMore10sToLend(i - preIdex))
                         {
                             Borrow10(i - preIdex);
                             preIdex--;
@@ -109,8 +110,6 @@ namespace Assigment2.Models
         {
             //convert b into list
             var subtractionList = b.ToString().Select(number => int.Parse(number.ToString())).ToList();
-            if (subtractionList.Count != Numbers.Count)
-                subtractionList = AppendPaddingToList(subtractionList);
             return Subtraction(subtractionList);
         }
 
@@ -133,17 +132,6 @@ namespace Assigment2.Models
             Numbers[Numbers.Count - index - 2] = Numbers[Numbers.Count - index - 2] - 1;
         }
 
-        public ReallyBigNumber Modulo(ReallyBigNumber b)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ReallyBigNumber Modulo(long b)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public bool Equals(ReallyBigNumber a)
         {
             if (a == null)
@@ -153,23 +141,7 @@ namespace Assigment2.Models
                 return false;
 
             if (Numbers.Count != a.Numbers.Count)
-            {
-                //add padding to the smaller one
-                if (Numbers.Count < a.Numbers.Count)
-                {
-                    while (Numbers.Count < a.Numbers.Count)
-                    {
-                        Numbers.Insert(0, 0);
-                    }
-                }
-                else
-                {
-                    while (Numbers.Count > a.Numbers.Count)
-                    {
-                        a.Numbers.Insert(0, 0);
-                    }
-                }
-            }
+                a.Numbers = AppendPaddingToList(a.Numbers);
 
             return !a.Numbers.Where((t, i) => t != this.Numbers[i]).Any();
         }
@@ -210,21 +182,22 @@ namespace Assigment2.Models
             if (b == 1)
                 return this;
             var tempB = new ReallyBigNumber(b.ToString());
-            
+
             return Remainder(tempB);
         }
 
         public ReallyBigNumber Remainder(ReallyBigNumber b)
         {
-            if (b.Numbers.Count <=  0)
+            if (b.Numbers.Count <= 0)
             {
                 Numbers.Clear();
                 Numbers.Add(-1);
                 return this;
             }
-
+            DividentSummation = 0;
             while (this.IsBiggerOrEqualThan(b.Numbers))
             {
+                DividentSummation++;
                 this.Subtraction(b.Numbers);
             }
 
@@ -234,12 +207,12 @@ namespace Assigment2.Models
 
         public bool IsBiggerOrEqualThan(List<int> a)
         {
-          
+
             if (Numbers.Count != a.Count)
             {
-                AppendPaddingToList(a);
+                a = AppendPaddingToList(a);
             }
-            for (int i = 0; i < Numbers.Count-1; i++)
+            for (var i = 0; i < Numbers.Count - 1; i++)
             {
                 if (Numbers[i] == 0 && a[i] == 0)
                 {
@@ -247,12 +220,11 @@ namespace Assigment2.Models
                     a.RemoveAt(i);
                 }
                 else break;
-                
             }
             var isBigger = true;
             for (var i = Numbers.Count - 1; i >= 0; i--)
             {
-//                if (inputList[i] != 0 && Numbers[i] != 0)
+                //                if (inputList[i] != 0 && Numbers[i] != 0)
                 isBigger = a[i] <= Numbers[i];
             }
             return isBigger;
@@ -261,7 +233,87 @@ namespace Assigment2.Models
 
         public bool IsSmallerOrEqualThanHalf(ReallyBigNumber b)
         {
-            throw new NotImplementedException();
+            var isSmaller = false;
+
+            if (b.Numbers.Count > Numbers.Count / 2 + 1)
+                return false;
+            if (b.Numbers.Count != Numbers.Count)
+                b.Numbers = AppendPaddingToList(b.Numbers);
+            if (Numbers.Count % 2 == 0)
+            {
+                for (var i = Numbers.Count / 2; i < b.Numbers.Count; i++)
+                {
+                    if (Numbers.Count > 1)
+                    {
+                        if (b.Numbers[i] + (b.Numbers[i - 1] * 10) >= Numbers[i] + (Numbers[i - 1] * 10)) break;
+                        isSmaller = true;
+                        break;
+                    }
+                    else
+                    {
+                        isSmaller = Numbers[0] >= b.Numbers[0];
+                    }
+                }
+            }
+            else
+            {
+                var bValue = 0;
+                var NValue = 0;
+                for (var i = Numbers.Count / 2; i < b.Numbers.Count; i++)
+                {
+                    if (b.Numbers[i] < Numbers[i])
+                    {
+                        isSmaller = true;
+                        break;
+                    }
+                    if (b.Numbers[i] != Numbers[i]) continue;
+                    bValue += b.Numbers[i] * 10;
+                    NValue += Numbers[i] * 10;
+
+                    if (bValue >= NValue) continue;
+                    isSmaller = true;
+                    break;
+                }
+            }
+            return isSmaller;
+        }
+
+
+        public ReallyBigNumber Addition(long b)
+        {
+            var additionList = b.ToString().Select(number => int.Parse(number.ToString())).ToList();
+            return Addition(additionList);
+        }
+
+        public ReallyBigNumber Addition(List<int> b)
+        {
+            if (b.Count != Numbers.Count)
+                b = AppendPaddingToList(b);
+
+            for (var i = b.Count - 1; i >= 0; i--)
+            {
+                Numbers[i] = Numbers[i] + b[i];
+                if (Numbers[i] > 9)
+                {
+                    Lend10(i);
+                }
+            }
+            return this;
+        }
+
+        public void Lend10(int idx)
+        {
+            idx = Math.Abs(idx);
+            if (idx > 0)
+            {
+                Numbers[Numbers.Count - idx] = Numbers[Numbers.Count - idx] - 10;
+                Numbers[Numbers.Count - idx - 1] = Numbers[Numbers.Count - idx - 1] + 1;
+            }
+            else
+            {
+                Numbers.Insert(0, 1);
+                Numbers[1] = Numbers[1] - 10;
+            }
         }
     }
 }

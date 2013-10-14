@@ -157,5 +157,67 @@ namespace ModelTests
             Assert.IsTrue(number888.Equals(new ReallyBigNumber("88")));
 
         }
+
+        [Test]
+        public void Add1To1Expect2()
+        {
+            var number1 = new ReallyBigNumber("1");
+            number1.Addition(1);
+            Assert.IsTrue(number1.Equals(new ReallyBigNumber("2")));
+        }
+
+        [Test]
+        public void Add1To9Expect10()
+        {
+            var number1 = new ReallyBigNumber("9");
+            number1.Addition(1);
+            Assert.IsTrue(number1.Equals(new ReallyBigNumber("10")));
+        }
+
+        [Test]
+        public void Add1To99Expect100()
+        {
+            var number1 = new ReallyBigNumber("99");
+            number1.Addition(1);
+            Assert.IsTrue(number1.Equals(new ReallyBigNumber("100")));
+        }
+
+        [Test]
+        public void Add91To99Expect190()
+        {
+            var number1 = new ReallyBigNumber("99");
+            number1.Addition(91);
+            Assert.IsTrue(number1.Equals(new ReallyBigNumber("190")));
+        }
+
+        [Test]
+        public void OneIsSmallerThan2()
+        {
+            Assert.IsTrue(new ReallyBigNumber("2").IsSmallerOrEqualThanHalf(new ReallyBigNumber("1")));
+        }
+
+        [Test]
+        public void FourIsSmallerThan10()
+        {
+            Assert.IsTrue(new ReallyBigNumber("10").IsSmallerOrEqualThanHalf(new ReallyBigNumber("4")));
+        }
+
+        [Test]
+        public void TestThat49IsSmallerThanHalfOf100()
+        {
+            Assert.IsTrue(new ReallyBigNumber("100").IsSmallerOrEqualThanHalf(new ReallyBigNumber("49")));
+        }
+
+        [Test]
+        public void TestThat51IsNotSmallerThanHalfOf100()
+        {
+            Assert.IsFalse(new ReallyBigNumber("100").IsSmallerOrEqualThanHalf(new ReallyBigNumber("51")));
+        }
+
+        [Test]
+        public void Test400IsSmallerThan1000()
+        {
+            Assert.IsTrue(new ReallyBigNumber("1000").IsSmallerOrEqualThanHalf(new ReallyBigNumber("400")));
+        }
     }
 }
