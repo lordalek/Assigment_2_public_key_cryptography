@@ -449,8 +449,8 @@ namespace Assigment2.Models
             idx = Math.Abs(idx);
             if (idx > 0)
             {
-                Numbers[Numbers.Count - idx] = Numbers[Numbers.Count - idx] - 10;
-                Numbers[Numbers.Count - idx - 1] = Numbers[Numbers.Count - idx - 1] + 1;
+                Numbers[idx] = Numbers[idx] - 10;
+                Numbers[idx - 1] = Numbers[idx - 1] + 1;
             }
             else
             {
