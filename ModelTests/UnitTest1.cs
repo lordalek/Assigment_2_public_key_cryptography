@@ -272,5 +272,11 @@ namespace ModelTests
         {
             Assert.IsTrue(new ReallyBigNumber("1000").Multiply(new ReallyBigNumber("2000")).Equals(new ReallyBigNumber("2000000")));
         }
+
+        [Test]
+        public void TEst1234T2234expect2756756()
+        {
+            Assert.IsTrue(new ReallyBigNumber("1234").Multiply(new ReallyBigNumber("2234")).Equals(new ReallyBigNumber("2756756")));
+        }
     }
 }
