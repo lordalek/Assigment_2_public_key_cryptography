@@ -225,5 +225,27 @@ namespace ModelTests
         {
             Assert.IsTrue(new ReallyBigNumber("88888888888888435267463257667835646757736467578").IsSmallerOrEqualThanHalf(new ReallyBigNumber("4000000435267463257667835646757736467578")));
         }
+
+        [Test]
+        public void TestThat11IsaPrime()
+        {
+            Assert.IsTrue(new ReallyBigNumber("1").IsPrime(new ReallyBigNumber("11")));
+        }
+        [Test]
+        public void TestThat12IsNotaPrime()
+        {
+            Assert.IsFalse(new ReallyBigNumber("1").IsPrime(new ReallyBigNumber("12")));
+        }
+
+        [Test]
+        public void TEstThat2699isAPrime()
+        {
+            Assert.IsTrue(new ReallyBigNumber("1").IsPrime(new ReallyBigNumber("2699")));
+        }
+        [Test]
+        public void TEstThat2698isNotAPrime()
+        {
+            Assert.IsFalse(new ReallyBigNumber("1").IsPrime(new ReallyBigNumber("2698")));
+        }
     }
 }

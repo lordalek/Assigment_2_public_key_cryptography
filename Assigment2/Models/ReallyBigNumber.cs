@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Assigment2.Models
 
         public bool IsPrime(ReallyBigNumber bigNumber)
         {
-            bool isPrime = bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 != 0;
+            var isPrime = bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 != 0;
 
             var idx = new ReallyBigNumber("3");
             while (IsSmallerOrEqualThanHalf(idx))
@@ -256,13 +257,13 @@ namespace Assigment2.Models
                         {
                             if (prevWasSmall)
                             {
-                                if(Numbers.Count % 2 == 0)
-                                break;
+                                if (Numbers.Count%2 == 0)
+                                    break;
                                 else
                                 {
                                     if (Numbers[idx - 1] == 0)
                                     {
-                                        if(b.Numbers[idx] + (b.Numbers[idx] * 10) >= Numbers[idx] + 99)
+                                        if (b.Numbers[idx] + (b.Numbers[idx]*10) >= Numbers[idx] + 99)
                                             break;
                                     }
                                 }
@@ -272,7 +273,10 @@ namespace Assigment2.Models
                     else
                     {
                         if (b.Numbers[0] <= Numbers[0])
-                        { idx++; continue; }
+                        {
+                            idx++;
+                            continue;
+                        }
                     }
                     isSmaller = false;
                     break;
@@ -365,6 +369,35 @@ namespace Assigment2.Models
                 Numbers.Insert(0, 1);
                 Numbers[1] = Numbers[1] - 10;
             }
+        }
+
+
+        public ReallyBigNumber GetRandomNumber(long seed, int numberOfDigits)
+        {
+            var a = 16807; // 7^5
+            var m = new ReallyBigNumber((Math.Pow(2, 32) - 1).ToString());
+            var firstXn = new ReallyBigNumber(seed.ToString());
+            firstXn.Multiply(a);
+            firstXn.Remainder(m);
+            var randomNumber = new ReallyBigNumber("1") {Numbers = firstXn.Numbers};
+            for (int i = 0; i <= numberOfDigits; i++)
+            {
+                var XnPluss1 = new ReallyBigNumber(randomNumber.Numbers[i].ToString());
+                XnPluss1.Multiply(a);
+                XnPluss1.Remainder(m);
+                randomNumber.Numbers.Add(XnPluss1.Numbers[XnPluss1.Numbers.Count - 1]);
+            }
+            return randomNumber;
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            foreach (var number in Numbers)
+            {
+                sb.Append(number);
+            }
+            return sb.ToString();
         }
     }
 }
