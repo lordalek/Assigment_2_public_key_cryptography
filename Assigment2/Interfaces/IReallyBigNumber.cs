@@ -11,18 +11,19 @@ namespace Assigment2.Interfaces
     {
         bool IsPrime(ReallyBigNumber bigNumber);
         ReallyBigNumber GenerateReallyBigNumber();
-        ReallyBigNumber Multiply(int b);
+        ReallyBigNumber Multiply(long b);
         ReallyBigNumber Multiply(ReallyBigNumber b);
-        ReallyBigNumber Subtraction(List<int> b);
+        ReallyBigNumber Subtraction(List<long> b);
         ReallyBigNumber Subtraction(long b);
         ReallyBigNumber Remainder(long b);
         ReallyBigNumber Remainder(ReallyBigNumber b);
         ReallyBigNumber Addition(long b);
-        ReallyBigNumber Addition(List<int> b);
+        ReallyBigNumber Addition(List<long> b);
         bool Equals(ReallyBigNumber a);
-        bool IsBiggerOrEqualThan(List<int> a);
+        bool IsBiggerOrEqualThan(List<long> a);
         bool IsSmallerOrEqualThanHalf(ReallyBigNumber b);
-        ReallyBigNumber GetRandomPrime(long seed, int numberOfDigits);
+        ReallyBigNumber GetRandomPrime(long seed, long numberOfDigits);
+        ReallyBigNumber GetGlobalCommonDenominator(ReallyBigNumber a, ReallyBigNumber b);
         string ToString();
     }
 }

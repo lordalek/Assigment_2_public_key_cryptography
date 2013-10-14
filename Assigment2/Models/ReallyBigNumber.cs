@@ -13,7 +13,7 @@ namespace Assigment2.Models
 {
     public class ReallyBigNumber : IReallyBigNumber
     {
-        public List<int> Numbers = new List<int>();
+        public List<long> Numbers = new List<long>();
         public long DividentSummation { get; set; }
 
         public bool IsPrime(ReallyBigNumber bigNumber)
@@ -56,7 +56,7 @@ namespace Assigment2.Models
 
             foreach (var number in bigNumberAsString)
             {
-                Numbers.Add(int.Parse(number.ToString()));
+                Numbers.Add(long.Parse(number.ToString()));
             }
         }
 
@@ -68,12 +68,12 @@ namespace Assigment2.Models
             for (var i = b.Numbers.Count - 1; i >= 0; i--)
             {
                 var padder = b.Numbers.Count - i;
-                var component = (b.Numbers[i]*(int.Parse("1".PadRight(padder, '0'))));
+                var component = (b.Numbers[i]*(long.Parse("1".PadRight(padder, '0'))));
                 if (component == 0) continue;
                 var overflow = 0;
 //                for (var j = 0; j < Numbers.Count; j++)
 //                {
-                var tempNumbers = new ReallyBigNumber(this.ToString()); // new List<int>(); 
+                var tempNumbers = new ReallyBigNumber(this.ToString()); // new List<long>(); 
                 tempNumbers.Multiply(component);
 //                    tempNumbers[j] = tempNumbers[j] * component;
                 multipledBigNumber.Addition(tempNumbers.Numbers);
@@ -97,7 +97,7 @@ namespace Assigment2.Models
             return multipledBigNumber;
         }
 
-        public ReallyBigNumber Multiply(int b)
+        public ReallyBigNumber Multiply(long b)
         {
             if (b == 0)
             {
@@ -111,7 +111,7 @@ namespace Assigment2.Models
                 overflow = 0;
                 //no overflow
                 if (Numbers[i] <= 9) continue;
-                //the leftmost integer is bigger than 10 causing overflow.
+                //the leftmost longeger is bigger than 10 causing overflow.
                 while (Numbers[i] > 9)
                 {
                     overflow++;
@@ -136,7 +136,7 @@ namespace Assigment2.Models
             return this;
         }
 
-        public void OverChargeOverFlow(int overflow, int idx)
+        public void OverChargeOverFlow(long overflow, int idx)
         {
             if (overflow > 0)
             {
@@ -165,7 +165,7 @@ namespace Assigment2.Models
             }
         }
 
-        public ReallyBigNumber Subtraction(List<int> b)
+        public ReallyBigNumber Subtraction(List<long> b)
         {
             if (b.Count != Numbers.Count)
                 b = AppendPaddingToList(b);
@@ -196,8 +196,8 @@ namespace Assigment2.Models
 
         public ReallyBigNumber Subtraction(long b)
         {
-            //convert b into list
-            var subtractionList = b.ToString().Select(number => int.Parse(number.ToString())).ToList();
+            //convert b longo list
+            var subtractionList = b.ToString().Select(number => long.Parse(number.ToString())).ToList();
             return Subtraction(subtractionList);
         }
 
@@ -234,7 +234,7 @@ namespace Assigment2.Models
             return !a.Numbers.Where((t, i) => t != this.Numbers[i]).Any();
         }
 
-        private List<int> AppendPaddingToList(List<int> a)
+        private List<long> AppendPaddingToList(List<long> a)
         {
             if (Numbers.Count != a.Count)
             {
@@ -293,7 +293,7 @@ namespace Assigment2.Models
         }
 
 
-        public bool IsBiggerOrEqualThan(List<int> a)
+        public bool IsBiggerOrEqualThan(List<long> a)
         {
             if (Numbers.Count != a.Count)
             {
@@ -424,11 +424,11 @@ namespace Assigment2.Models
 
         public ReallyBigNumber Addition(long b)
         {
-            var additionList = b.ToString().Select(number => int.Parse(number.ToString())).ToList();
+            var additionList = b.ToString().Select(number => long.Parse(number.ToString())).ToList();
             return Addition(additionList);
         }
 
-        public ReallyBigNumber Addition(List<int> b)
+        public ReallyBigNumber Addition(List<long> b)
         {
             if (b.Count != Numbers.Count)
                 b = AppendPaddingToList(b);
@@ -460,7 +460,7 @@ namespace Assigment2.Models
         }
 
 
-        public ReallyBigNumber GetRandomPrime(long seed, int numberOfDigits)
+        public ReallyBigNumber GetRandomPrime(long seed, long numberOfDigits)
         {
             var randomNumber = new ReallyBigNumber("2");
             var a = 16807; // 7^5
@@ -492,6 +492,11 @@ namespace Assigment2.Models
                 sb.Append(number);
             }
             return sb.ToString();
+        }
+
+        public ReallyBigNumber GetGlobalCommonDenominator(ReallyBigNumber a, ReallyBigNumber b)
+        {
+            return b.Equals(new ReallyBigNumber("0")) ? a : GetGlobalCommonDenominator(b, a.Remainder(b));
         }
     }
 }

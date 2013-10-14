@@ -20,7 +20,7 @@ namespace Assigment2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            for (int i = 10; i <= 309; i++)
+            for (long i = 10; i <= 309; i++)
             {
                 this.cbDecimals.Items.Add(i);
             }
@@ -40,7 +40,7 @@ namespace Assigment2
                     return;
                 this.Cursor = Cursors.WaitCursor;
                 var psRandomNumberino = new ReallyBigNumber("1").GetRandomPrime(seed,
-                    (int) this.cbDecimals.SelectedItem);
+                    (long) this.cbDecimals.SelectedItem);
                 this.rTxtPrimeNumber.Text = psRandomNumberino.ToString();
                 this.rTxtPrimeNumber.Tag = psRandomNumberino;
             }

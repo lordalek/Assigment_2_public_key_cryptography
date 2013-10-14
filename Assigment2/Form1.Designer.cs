@@ -42,7 +42,7 @@
             this.btnGenerateRandomPrimeNumber.Name = "btnGenerateRandomPrimeNumber";
             this.btnGenerateRandomPrimeNumber.Size = new System.Drawing.Size(206, 23);
             this.btnGenerateRandomPrimeNumber.TabIndex = 0;
-            this.btnGenerateRandomPrimeNumber.Text = "Generate Random Prime Number";
+            this.btnGenerateRandomPrimeNumber.Text = "Generate Random Prime N";
             this.btnGenerateRandomPrimeNumber.UseVisualStyleBackColor = true;
             this.btnGenerateRandomPrimeNumber.Click += new System.EventHandler(this.btnGenerateRandomPrimeNumber_Click);
             // 

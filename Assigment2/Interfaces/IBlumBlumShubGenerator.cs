@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Assigment2.Models;
 
-namespace Assigment2.Interfaces
+namespace Assigment2.longerfaces
 {
     interface IBlumBlumShubGenerator
     {

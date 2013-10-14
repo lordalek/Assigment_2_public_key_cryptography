@@ -11,10 +11,10 @@ namespace Assigment2.Interfaces
     public interface IRSAAlgorithm
     {
         ReallyBigNumber CalculateN(ReallyBigNumber q, ReallyBigNumber p);
-        ReallyBigNumber CaluculatePhi(ReallyBigNumber n);
-        ReallyBigNumber SelectERelativeToPhiAndSmallerThanPhi(ReallyBigNumber phi);
+        ReallyBigNumber CaluculatePhi(ReallyBigNumber p, ReallyBigNumber q);
+        ReallyBigNumber SelectERelativeToPhiAndSmallerThanPhi(ReallyBigNumber phi, ReallyBigNumber n);
         ReallyBigNumber DetermineDAs1AndSMallerThanPhi(ReallyBigNumber phi);
-        string Encrpypt(ReallyBigNumber n, string plaintText, ReallyBigNumber e);
+        string Encrpypt(ReallyBigNumber p,ReallyBigNumber q, string plaintText, ReallyBigNumber e);
         string Decrpyt(ReallyBigNumber n, string cipherText, ReallyBigNumber d);
     }
 }

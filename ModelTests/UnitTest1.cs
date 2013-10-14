@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Security.Cryptography;
 using Assigment2.Models;
 using NUnit.Core;
 using NUnit.Framework;
+using RSA = Assigment2.Logic.RSA;
 
 namespace ModelTests
 {
@@ -277,6 +279,39 @@ namespace ModelTests
         public void TEst1234T2234expect2756756()
         {
             Assert.IsTrue(new ReallyBigNumber("1234").Multiply(new ReallyBigNumber("2234")).Equals(new ReallyBigNumber("2756756")));
+        }
+//
+//        [Test]
+//        public void TestCalculationOfNForOverFlow()
+//        {
+//            string errorM = string.Empty;
+//            try
+//            {
+//            var rsa = new RSA();
+//            rsa.CalculateN(new ReallyBigNumber("1234523424523455134"), new ReallyBigNumber("3006666666"));
+//            }
+//            catch (Exception ex)
+//            {
+//                errorM = ex.Message;
+//            }
+//
+//            Assert.IsNotNullOrEmpty(errorM);
+//        }
+
+        [Test]
+        public void testGCDfor21And14()
+        {
+            var gcd = new ReallyBigNumber("6").GetGlobalCommonDenominator(new ReallyBigNumber("14"),
+                new ReallyBigNumber("21"));
+            Assert.IsFalse(new ReallyBigNumber("1").Equals(gcd));
+        }
+
+        [Test]
+        public void testGCDfor14And15()
+        {
+            var gcd = new ReallyBigNumber("15").GetGlobalCommonDenominator(new ReallyBigNumber("15"),
+                new ReallyBigNumber("14"));
+            Assert.IsTrue(new ReallyBigNumber("1").Equals(gcd));
         }
     }
 }
