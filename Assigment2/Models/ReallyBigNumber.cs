@@ -22,9 +22,21 @@ namespace Assigment2.Models
             if (!isPrime)
                 return false;
             var idx = new ReallyBigNumber("3");
+            var firstRun = true;
             while (IsSmallerOrEqualThanHalf(idx))
             {
-                if (Remainder(idx).Numbers[Numbers.Count - 1] == 0)
+                var operatingNumber = bigNumber;
+                if (firstRun)
+                {
+                    var firstRunTemp = 3L;
+                    while (firstRunTemp.ToString().Length < operatingNumber.Numbers.Count - 1)
+                    {
+                        firstRunTemp = firstRunTemp*3;
+                    }
+                    operatingNumber.Remainder(firstRunTemp);
+                }
+                operatingNumber.Remainder(idx);
+                if (operatingNumber.Numbers[operatingNumber.Numbers.Count - 1] == 0)
                     isPrime = false;
                 idx.Addition(2);
             }
@@ -48,13 +60,45 @@ namespace Assigment2.Models
             }
         }
 
+        public ReallyBigNumber Multiply(ReallyBigNumber b)
+        {
+            var multipledBigNumber = new ReallyBigNumber("0");
+            for (var i = b.Numbers.Count -1; i >= 0; i--)
+            {
+                var padder = b.Numbers.Count - i;
+                var component = (b.Numbers[i]*(int.Parse("1".PadRight(padder, '0'))));
+                if(component == 0) continue;
+                var overflow = 0;
+//                for (var j = 0; j < Numbers.Count; j++)
+//                {
+                    var tempNumbers = new ReallyBigNumber(this.ToString());// new List<int>(); 
+                    tempNumbers.Multiply(component);
+//                    tempNumbers[j] = tempNumbers[j] * component;
+                    multipledBigNumber.Addition(tempNumbers.Numbers);
+//                    Numbers[j] += overflow;
+//                    overflow = 0;
+//                    if(Numbers[j] <= 9) continue;
+//                    while (Numbers[j] > 9)
+//                    {
+//                        overflow++;
+//                        Numbers[j] -= 10;
+////                    }
+////                    if (i == 0 && overflow > 0)
+////                    {
+////                        Numbers.Insert(0, overflow);
+////                        overflow = 0;
+////                    }
+//                    }
+//                }
+            }
+
+            return multipledBigNumber;
+        }
 
         public ReallyBigNumber Multiply(int b)
         {
             if (b == 0)
             {
-                Numbers.Clear();
-                Numbers.Add(0);
                 return this;
             }
             var overflow = 0;
@@ -72,13 +116,51 @@ namespace Assigment2.Models
                     Numbers[i] = Numbers[i] - 10;
                 }
                 
-                if (i == 0)
+                if (i == 0 && overflow > 0)
                 {
+                    Numbers.Insert(0, overflow);
                     overflow = 0;
-                    Numbers.Insert(0, 1);
                 }
             }
+            while (Numbers[0] > 9)
+            {
+                overflow++;
+                Numbers[0] = Numbers[0] - 10;
+            }
+            if (overflow > 0)
+            {
+               OverChargeOverFlow(overflow, 0);
+            }
             return this;
+        }
+
+        public void OverChargeOverFlow(int overflow, int idx)
+        {
+            if (overflow > 0)
+            {
+                if (idx <= 0)
+                {
+                    Numbers.Insert(0, overflow);
+                    overflow = 0;
+                    while (Numbers[0] > 9)
+                    {
+                        overflow++;
+                        Numbers[0] = Numbers[0] - 10;
+                    }
+                    OverChargeOverFlow(overflow, idx);
+                }
+                else
+                {
+                    Numbers[idx - 1] += overflow;
+                    overflow = 0;
+                    while (Numbers[idx - 1] > 9)
+                    {
+                        overflow++;
+                        Numbers[idx - 1] = Numbers[idx -1] - 10;
+                    }
+                    OverChargeOverFlow(overflow, --idx);
+                }
+            }
         }
 
         public ReallyBigNumber Subtraction(List<int> b)
@@ -396,6 +478,7 @@ namespace Assigment2.Models
                     XnPluss1.Remainder(m);
                     randomNumber.Numbers.Add(XnPluss1.Numbers[XnPluss1.Numbers.Count - 1]);
                 }
+                randomNumber.Addition(1);
             }
             return randomNumber;
         }

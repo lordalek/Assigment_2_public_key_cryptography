@@ -49,8 +49,7 @@ namespace ModelTests
         {
             var numberA = new ReallyBigNumber("12");
             numberA.Multiply(0);
-            var number0 = new ReallyBigNumber("0");
-            Assert.IsTrue(numberA.Equals(number0));
+            Assert.IsTrue(numberA.Equals(new ReallyBigNumber("12")));
         }
 
         [Test]
@@ -104,7 +103,7 @@ namespace ModelTests
         public void TestIfEqualNumbersAreBigger_9_9()
         {
             var number9 = new ReallyBigNumber("9");
-            Assert.IsTrue(number9.IsBiggerOrEqualThan( new ReallyBigNumber("9").Numbers));
+            Assert.IsTrue(number9.IsBiggerOrEqualThan(new ReallyBigNumber("9").Numbers));
         }
 
         [Test]
@@ -130,7 +129,7 @@ namespace ModelTests
             number88.Remainder(10);
             Assert.IsTrue(number88.Equals(new ReallyBigNumber("8")));
         }
-        
+
 
         [Test]
         public void TestRemainerof100_3_should_1()
@@ -146,7 +145,6 @@ namespace ModelTests
             var number888 = new ReallyBigNumber("888");
             number888.Remainder(10);
             Assert.IsTrue(number888.Equals(new ReallyBigNumber("8")));
-
         }
 
         [Test]
@@ -155,7 +153,6 @@ namespace ModelTests
             var number888 = new ReallyBigNumber("888");
             number888.Remainder(100);
             Assert.IsTrue(number888.Equals(new ReallyBigNumber("88")));
-
         }
 
         [Test]
@@ -223,7 +220,9 @@ namespace ModelTests
         [Test]
         public void Test4000000435267463257667835646757736467578IsSmallerThan5123000435267463257667835646757736467578()
         {
-            Assert.IsTrue(new ReallyBigNumber("88888888888888435267463257667835646757736467578").IsSmallerOrEqualThanHalf(new ReallyBigNumber("4000000435267463257667835646757736467578")));
+            Assert.IsTrue(
+                new ReallyBigNumber("88888888888888435267463257667835646757736467578").IsSmallerOrEqualThanHalf(
+                    new ReallyBigNumber("4000000435267463257667835646757736467578")));
         }
 
         [Test]
@@ -231,6 +230,7 @@ namespace ModelTests
         {
             Assert.IsTrue(new ReallyBigNumber("1").IsPrime(new ReallyBigNumber("11")));
         }
+
         [Test]
         public void TestThat12IsNotaPrime()
         {
@@ -242,10 +242,35 @@ namespace ModelTests
         {
             Assert.IsTrue(new ReallyBigNumber("1").IsPrime(new ReallyBigNumber("2699")));
         }
+
         [Test]
         public void TEstThat2698isNotAPrime()
         {
             Assert.IsFalse(new ReallyBigNumber("1").IsPrime(new ReallyBigNumber("2698")));
+        }
+
+        [Test]
+        public void Test10M10AsBigNumberExpect100()
+        {
+            Assert.IsTrue(new ReallyBigNumber("10").Multiply(new ReallyBigNumber("10")).Equals(new ReallyBigNumber("100")));
+        }
+
+        [Test]
+        public void Test10M15AsBigNumberExpect150()
+        {
+            Assert.IsTrue(new ReallyBigNumber("10").Multiply(new ReallyBigNumber("15")).Equals(new ReallyBigNumber("150")));
+        }
+
+        [Test]
+        public void TEst100T200expect20000()
+        {
+            Assert.IsTrue(new ReallyBigNumber("100").Multiply(new ReallyBigNumber("200")).Equals(new ReallyBigNumber("20000")));
+        }
+
+        [Test]
+        public void TEst1000T2000expect2000000()
+        {
+            Assert.IsTrue(new ReallyBigNumber("1000").Multiply(new ReallyBigNumber("2000")).Equals(new ReallyBigNumber("2000000")));
         }
     }
 }

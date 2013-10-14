@@ -14,5 +14,7 @@ namespace Assigment2.Interfaces
         ReallyBigNumber CaluculatePhi(ReallyBigNumber n);
         ReallyBigNumber SelectERelativeToPhiAndSmallerThanPhi(ReallyBigNumber phi);
         ReallyBigNumber DetermineDAs1AndSMallerThanPhi(ReallyBigNumber phi);
+        string Encrpypt(ReallyBigNumber n, string plaintText, ReallyBigNumber e);
+        string Decrpyt(ReallyBigNumber n, string cipherText, ReallyBigNumber d);
     }
 }
