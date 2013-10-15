@@ -16,6 +16,9 @@ namespace Assigment2
         public Form1()
         {
             InitializeComponent();
+            txtXMLPath.Text =
+                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ??
+                string.Empty;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -63,6 +66,22 @@ namespace Assigment2
             else
             {
                 errorProvider1.Clear();
+            }
+        }
+
+        private void btnXmlPath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var fileDialog = new FolderBrowserDialog();
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                    txtXMLPath.Text = fileDialog.SelectedPath;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to save data to field.. Error: " + Environment.NewLine + ex.Message, "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }
