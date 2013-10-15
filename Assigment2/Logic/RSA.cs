@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -15,6 +16,7 @@ namespace Assigment2.Logic
         public ReallyBigNumber N { get; set; }
         public ReallyBigNumber Phi { get; set; }
         public ReallyBigNumber E { get; set; }
+
         public Models.ReallyBigNumber CalculateN(Models.ReallyBigNumber q, Models.ReallyBigNumber p)
         {
             q.Multiply(p);
@@ -32,10 +34,12 @@ namespace Assigment2.Logic
             return Phi;
         }
 
-        public Models.ReallyBigNumber SelectERelativeToPhiAndSmallerThanPhi(Models.ReallyBigNumber phi, Models.ReallyBigNumber n)
+        public Models.ReallyBigNumber SelectERelativeToPhiAndSmallerThanPhi(Models.ReallyBigNumber phi,
+            Models.ReallyBigNumber n)
         {
             var e = new ReallyBigNumber("3");
-            while (e.IsPrime(e) && !e.GetGlobalCommonDenominator(e, phi).Equals(new ReallyBigNumber("1")) && !n.IsBiggerOrEqualThan(e.Numbers) && new ReallyBigNumber("1").IsBiggerOrEqualThan(e.Numbers))
+            while (e.IsPrime(e) && !e.GetGlobalCommonDenominator(e, phi).Equals(new ReallyBigNumber("1")) &&
+                   !n.IsBiggerOrEqualThan(e.Numbers) && new ReallyBigNumber("1").IsBiggerOrEqualThan(e.Numbers))
             {
                 e.Addition(2);
             }
@@ -48,14 +52,22 @@ namespace Assigment2.Logic
             throw new NotImplementedException();
         }
 
-        public string Encrpypt(ReallyBigNumber p, ReallyBigNumber q, string plaintText, ReallyBigNumber e)
+        public string Encrpypt(ReallyBigNumber n, string plaintText, ReallyBigNumber e)
         {
-            if (p == null) throw new ArgumentNullException("p");
             if (plaintText == null) throw new ArgumentNullException("plaintText");
             if (e == null) throw new ArgumentNullException("e");
-            CalculateN(q, p);
-            CaluculatePhi(p, q);
-            return string.Empty;
+            if (plaintText.Length >= n.Numbers.Count)
+                throw new Exception("Text length is greater than N");
+            var sb = new StringBuilder();
+            for (int i = 0; i < plaintText.Length - 1; i += 2)
+            {
+                var encrpytedValues =
+                    new ReallyBigNumber(Encoding.UTF8.GetBytes(plaintText[i].ToString())[0].ToString() +
+                                        Encoding.UTF8.GetBytes(plaintText[i + 1].ToString())[0].ToString());
+                encrpytedValues = encrpytedValues.ModPow(n, e);
+                sb.Append(encrpytedValues.ToString());
+            }
+            return sb.ToString();
         }
 
         public string Decrpyt(Models.ReallyBigNumber n, string cipherText, Models.ReallyBigNumber d)

@@ -70,7 +70,6 @@ namespace Assigment2.Models
                 var padder = b.Numbers.Count - i;
                 var component = (b.Numbers[i]*(long.Parse("1".PadRight(padder, '0'))));
                 if (component == 0) continue;
-                var overflow = 0;
 //                for (var j = 0; j < Numbers.Count; j++)
 //                {
                 var tempNumbers = new ReallyBigNumber(this.ToString()); // new List<long>(); 
@@ -497,6 +496,51 @@ namespace Assigment2.Models
         public ReallyBigNumber GetGlobalCommonDenominator(ReallyBigNumber a, ReallyBigNumber b)
         {
             return b.Equals(new ReallyBigNumber("0")) ? a : GetGlobalCommonDenominator(b, a.Remainder(b));
+        }
+
+
+        public ReallyBigNumber Pow(long a)
+        {
+            if (a <= 0)
+                return this;
+            var returnPow = new ReallyBigNumber("0") {Numbers = Numbers.ToList()};
+            for (int i = 1; i < a; i++)
+            {
+                returnPow = returnPow.Multiply(this);
+            }
+            return returnPow;
+        }
+
+        public ReallyBigNumber Pow(ReallyBigNumber a)
+        {
+            if (a.Numbers.Count <= 0)
+                return this;
+            var counter = new ReallyBigNumber("1");
+            var returnPow = new ReallyBigNumber("0") {Numbers = Numbers.ToList()};
+            while (a.IsBiggerOrEqualThan(counter.Numbers))
+            {
+                returnPow = returnPow.Multiply(this);
+                counter.Addition(1);
+            }
+            return returnPow;
+        }
+
+
+        public ReallyBigNumber ModPow(ReallyBigNumber mod, ReallyBigNumber pow)
+        {
+            var modPow = new ReallyBigNumber("1")
+            {
+                Numbers = Numbers.ToList()
+            };
+            var counter = new ReallyBigNumber("1");
+            pow.Subtraction(1);
+            while (pow.IsBiggerOrEqualThan(counter.Numbers))
+            {
+                modPow = modPow.Multiply(this);
+                modPow = modPow.Remainder(mod);
+                counter.Addition(1);
+            }
+            return modPow;
         }
     }
 }

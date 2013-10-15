@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using Assigment2.Models;
 using NUnit.Core;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using RSA = Assigment2.Logic.RSA;
 
 namespace ModelTests
@@ -313,5 +314,43 @@ namespace ModelTests
                 new ReallyBigNumber("14"));
             Assert.IsTrue(new ReallyBigNumber("1").Equals(gcd));
         }
+
+        [Test]
+        public void TestEncrpyForByteValues()
+        {
+            var rsa = new RSA();
+            var bytes = rsa.Encrpypt(new ReallyBigNumber("1000"), "Ha", new ReallyBigNumber("3"));
+
+        }
+
+        [Test]
+        public void TestPowOf3pow3()
+        {
+            Assert.IsTrue(new ReallyBigNumber("3").Pow(3).Equals(new ReallyBigNumber("27")));
+        }
+
+        [Test]
+        public void TestPow2of3()
+        {
+            Assert.IsTrue(new ReallyBigNumber("3").Pow(2).Equals(new ReallyBigNumber("9")));
+        }
+
+        [Test]
+        public void TestPow6of4()
+        {
+            Assert.IsTrue(new ReallyBigNumber("4").Pow(6).Equals(new ReallyBigNumber("4096")));
+        }
+        [Test]
+        public void TestMod3Pow2of4()
+        {
+            Assert.IsTrue(new ReallyBigNumber("4").ModPow(new ReallyBigNumber("3"), new ReallyBigNumber("2")).Equals(new ReallyBigNumber("1")));
+        }
+
+        [Test]
+        public void TestMod23Pow2of5()
+        {
+            Assert.IsTrue(new ReallyBigNumber("5").ModPow(new ReallyBigNumber("23"), new ReallyBigNumber("2")).Equals(new ReallyBigNumber("2")));
+        }
+
     }
 }

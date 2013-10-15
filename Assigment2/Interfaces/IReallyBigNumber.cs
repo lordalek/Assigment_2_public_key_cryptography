@@ -19,11 +19,13 @@ namespace Assigment2.Interfaces
         ReallyBigNumber Remainder(ReallyBigNumber b);
         ReallyBigNumber Addition(long b);
         ReallyBigNumber Addition(List<long> b);
+        ReallyBigNumber Pow(long a);
         bool Equals(ReallyBigNumber a);
         bool IsBiggerOrEqualThan(List<long> a);
         bool IsSmallerOrEqualThanHalf(ReallyBigNumber b);
         ReallyBigNumber GetRandomPrime(long seed, long numberOfDigits);
         ReallyBigNumber GetGlobalCommonDenominator(ReallyBigNumber a, ReallyBigNumber b);
+        ReallyBigNumber ModPow(ReallyBigNumber mod, ReallyBigNumber pow);
         string ToString();
     }
 }
