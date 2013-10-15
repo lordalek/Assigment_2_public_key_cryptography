@@ -20,7 +20,7 @@ namespace Assigment2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            for (long i = 10; i <= 309; i++)
+            for (long i = 1; i <= 100; i++)
             {
                 this.cbDecimals.Items.Add(i);
             }
@@ -51,6 +51,18 @@ namespace Assigment2
             finally
             {
                 this.Cursor = Cursors.Default;
+            }
+        }
+
+        private void btnEncrypt_Click(object sender, EventArgs e)
+        {
+            if (this.txtInput.Text.Length <= 0)
+            {
+                errorProvider1.SetError(this.txtInput, "Blank input not allowed");
+            }
+            else
+            {
+                errorProvider1.Clear();
             }
         }
     }

@@ -352,5 +352,11 @@ namespace ModelTests
             Assert.IsTrue(new ReallyBigNumber("5").ModPow(new ReallyBigNumber("23"), new ReallyBigNumber("2")).Equals(new ReallyBigNumber("2")));
         }
 
+        [Test]
+        public void TestDwithEAs7andPhiAs160Expect23()
+        {
+            var d = new RSA().DetermineDAs1AndSMallerThanPhi(new ReallyBigNumber("160"), new ReallyBigNumber("7"));
+            Assert.IsTrue(d.Equals(new ReallyBigNumber("23")));
+        }
     }
 }

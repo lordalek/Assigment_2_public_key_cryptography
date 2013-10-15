@@ -47,9 +47,29 @@ namespace Assigment2.Logic
             return e;
         }
 
-        public Models.ReallyBigNumber DetermineDAs1AndSMallerThanPhi(Models.ReallyBigNumber phi)
+        public Models.ReallyBigNumber DetermineDAs1AndSMallerThanPhi(Models.ReallyBigNumber phi,
+            Models.ReallyBigNumber e)
         {
-            throw new NotImplementedException();
+            var d = new ReallyBigNumber("2");
+            var isOK = false;
+            while (!isOK)
+            {
+                var tempD = new ReallyBigNumber("1")
+                {
+                    Numbers = d.Numbers
+                };
+                tempD = tempD.Multiply(e);
+                tempD = tempD.Remainder(phi);
+                if (tempD.Equals(new ReallyBigNumber("1")))
+                {
+                    isOK = true;
+                }
+                else
+                {
+                    d.Addition(1);
+                }
+            }
+            return d;
         }
 
         public string Encrpypt(ReallyBigNumber n, string plaintText, ReallyBigNumber e)
