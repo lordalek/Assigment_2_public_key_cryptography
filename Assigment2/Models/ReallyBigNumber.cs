@@ -22,6 +22,8 @@ namespace Assigment2.Models
             if (!isPrime)
                 return false;
             var idx = new ReallyBigNumber("3");
+            if (bigNumber.Equals(idx))
+                return true;
             var firstRun = true;
             while (IsSmallerOrEqualThanHalf(idx))
             {
@@ -57,6 +59,18 @@ namespace Assigment2.Models
             foreach (var number in bigNumberAsString)
             {
                 Numbers.Add(long.Parse(number.ToString()));
+            }
+        }
+
+        public ReallyBigNumber(string bigNumberAsString, bool isRichInput)
+        {
+            if (string.IsNullOrEmpty(bigNumberAsString))
+                throw new ArgumentNullException("bigNumberAsString");
+           
+            foreach (var number in bigNumberAsString)
+            {
+                Addition(long.Parse(Encoding.UTF8.GetBytes(number.ToString())[0].ToString()));
+                //this  Numbers.Add(long.Parse(Encoding.UTF8.GetBytes(number.ToString()).ToString()));
             }
         }
 
@@ -312,6 +326,30 @@ namespace Assigment2.Models
             {
                 //                if (inputList[i] != 0 && Numbers[i] != 0)
                 isBigger = a[i] <= Numbers[i];
+            }
+            return isBigger;
+        }
+
+        public bool IsBigger(List<long> a)
+        {
+            if (Numbers.Count != a.Count)
+            {
+                a = AppendPaddingToList(a);
+            }
+            for (var i = 0; i < Numbers.Count - 1; i++)
+            {
+                if (Numbers[i] == 0 && a[i] == 0)
+                {
+                    Numbers.RemoveAt(i);
+                    a.RemoveAt(i);
+                }
+                else break;
+            }
+            var isBigger = true;
+            for (var i = Numbers.Count - 1; i >= 0; i--)
+            {
+                //                if (inputList[i] != 0 && Numbers[i] != 0)
+                isBigger = a[i] < Numbers[i];
             }
             return isBigger;
         }
