@@ -216,5 +216,10 @@ namespace Assigment2
                 this.Cursor = Cursors.Default;
             }
         }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
