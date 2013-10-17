@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Odbc;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Policy;
@@ -28,15 +29,15 @@ namespace Assigment2.Models
             while (IsSmallerOrEqualThanHalf(idx))
             {
                 var operatingNumber = bigNumber;
-                if (firstRun)
-                {
-                    var firstRunTemp = 3L;
-                    while (firstRunTemp.ToString().Length < operatingNumber.Numbers.Count - 1)
-                    {
-                        firstRunTemp = firstRunTemp*3;
-                    }
-                    operatingNumber.Remainder(firstRunTemp);
-                }
+                //if (firstRun)
+                //{
+                //    var firstRunTemp = 3L;
+                //    while (firstRunTemp.ToString().Length < operatingNumber.Numbers.Count - 1)
+                //    {
+                //        firstRunTemp = firstRunTemp*3;
+                //    }
+                //    operatingNumber.Remainder(firstRunTemp);
+                //}
                 operatingNumber.Remainder(idx);
                 if (operatingNumber.Numbers[operatingNumber.Numbers.Count - 1] == 0)
                     isPrime = false;
@@ -66,7 +67,7 @@ namespace Assigment2.Models
         {
             if (string.IsNullOrEmpty(bigNumberAsString))
                 throw new ArgumentNullException("bigNumberAsString");
-           
+
             foreach (var number in bigNumberAsString)
             {
                 Addition(long.Parse(Encoding.UTF8.GetBytes(number.ToString())[0].ToString()));
@@ -106,7 +107,7 @@ namespace Assigment2.Models
 //                    }
 //                }
             }
-
+            RemovesLeadingZeros(Numbers);
             return multipledBigNumber;
         }
 
@@ -204,6 +205,8 @@ namespace Assigment2.Models
                 var idx = i; // Numbers.Count - i;
                 Numbers[idx] = Numbers[idx] - b[i];
             }
+            RemovesLeadingZeros(b);
+            RemovesLeadingZeros(Numbers);
             return this;
         }
 
@@ -244,7 +247,10 @@ namespace Assigment2.Models
             if (Numbers.Count != a.Numbers.Count)
                 a.Numbers = AppendPaddingToList(a.Numbers);
 
-            return !a.Numbers.Where((t, i) => t != this.Numbers[i]).Any();
+            var isEqual = !a.Numbers.Where((t, i) => t != this.Numbers[i]).Any();
+            RemovesLeadingZeros(a.Numbers);
+            RemovesLeadingZeros(Numbers);
+            return isEqual;
         }
 
         private List<long> AppendPaddingToList(List<long> a)
@@ -267,8 +273,17 @@ namespace Assigment2.Models
                     }
                 }
             }
-
             return a;
+        }
+
+        private List<long> RemovesLeadingZeros(List<long> tooLongList)
+        {
+            if (tooLongList.Count > 0 && tooLongList[0] == 0)
+            {
+            tooLongList.RemoveAt(0);
+            return RemovesLeadingZeros(tooLongList);
+            }
+            return tooLongList;
         }
 
         public ReallyBigNumber Remainder(long b)
@@ -296,12 +311,33 @@ namespace Assigment2.Models
                 return this;
             }
             DividentSummation = 0;
+            if (b.Numbers.Count > Numbers.Count)
+                return this;
             while (this.IsBiggerOrEqualThan(b.Numbers))
             {
                 DividentSummation++;
-                this.Subtraction(b.Numbers);
+                if (Numbers.Count > b.Numbers.Count && !Equals(new ReallyBigNumber("0")) && Numbers.Count > 1)
+                {
+                    var dividentIncrease = 10;
+                    AppendPaddingToList(b.Numbers);
+                    var extendedDivident = new ReallyBigNumber("1")
+                    {
+                        Numbers = b.Numbers.ToList()
+                    };
+                    for (int i = Numbers.Count - 2; i >= 0; i++)
+                    {
+                        if (Numbers[i] > b.Numbers[i])
+                            extendedDivident.Multiply(dividentIncrease);
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                    this.Subtraction(b.Numbers);
             }
-
+            b.RemovesLeadingZeros(Numbers);
             return this;
         }
 
@@ -310,7 +346,7 @@ namespace Assigment2.Models
         {
             if (Numbers.Count != a.Count)
             {
-                a = AppendPaddingToList(a);
+                AppendPaddingToList(a);
             }
             for (var i = 0; i < Numbers.Count - 1; i++)
             {
@@ -327,6 +363,8 @@ namespace Assigment2.Models
                 //                if (inputList[i] != 0 && Numbers[i] != 0)
                 isBigger = a[i] <= Numbers[i];
             }
+            RemovesLeadingZeros(a);
+            RemovesLeadingZeros(Numbers);
             return isBigger;
         }
 
@@ -334,7 +372,7 @@ namespace Assigment2.Models
         {
             if (Numbers.Count != a.Count)
             {
-                a = AppendPaddingToList(a);
+                AppendPaddingToList(a);
             }
             for (var i = 0; i < Numbers.Count - 1; i++)
             {
@@ -351,6 +389,8 @@ namespace Assigment2.Models
                 //                if (inputList[i] != 0 && Numbers[i] != 0)
                 isBigger = a[i] < Numbers[i];
             }
+            RemovesLeadingZeros(a);
+            RemovesLeadingZeros(Numbers);
             return isBigger;
         }
 
@@ -362,7 +402,7 @@ namespace Assigment2.Models
 //            if (b.Numbers.Count > Numbers.Count/2 + 1)
 //                return false;
             if (b.Numbers.Count != Numbers.Count)
-                b.Numbers = AppendPaddingToList(b.Numbers);
+                AppendPaddingToList(b.Numbers);
 
             var idx = 0;
             var prevWasSmall = false;
@@ -454,7 +494,9 @@ namespace Assigment2.Models
             //        isSmaller = true;
             //        break;
             //    }
-            //}
+            //} 
+            RemovesLeadingZeros(b.Numbers);
+            RemovesLeadingZeros(Numbers);
             return isSmaller;
         }
 
@@ -478,6 +520,8 @@ namespace Assigment2.Models
                     Lend10(i);
                 }
             }
+            RemovesLeadingZeros(b);
+            RemovesLeadingZeros(Numbers);
             return this;
         }
 
