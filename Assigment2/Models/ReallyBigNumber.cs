@@ -79,7 +79,7 @@ namespace Assigment2.Models
         {
             var multipledBigNumber = new ReallyBigNumber("0");
             if (b.Numbers.Count != Numbers.Count)
-                b.Numbers = AppendPaddingToList(b.Numbers);
+                AppendPaddingToList(b.Numbers);
             for (var i = b.Numbers.Count - 1; i >= 0; i--)
             {
                 var padder = b.Numbers.Count - i;
@@ -169,10 +169,10 @@ namespace Assigment2.Models
                 {
                     Numbers[idx - 1] += overflow;
                     overflow = 0;
-                    while (Numbers[idx - 1] > 9)
+                    while (Numbers[0] > 9)
                     {
                         overflow++;
-                        Numbers[idx - 1] = Numbers[idx - 1] - 10;
+                        Numbers[0] = Numbers[0] - 10;
                     }
                     OverChargeOverFlow(overflow, --idx);
                 }
@@ -185,28 +185,26 @@ namespace Assigment2.Models
                 b = AppendPaddingToList(b);
             for (var i = b.Count - 1; i >= 0; i--)
             {
-                if (b[i] > Numbers[Numbers.Count - i - 1])
-                {
-                    var preIdex = 0;
-                    if (Numbers[Numbers.Count - i - 1] <= 0)
-                        while (Numbers[Numbers.Count - i - 1 + preIdex] <= 0
-                               && (Numbers.Count + preIdex > 1)
-                               && HasMore10sToLend(i - preIdex))
-                        {
-                            Borrow10(i - preIdex);
-                            preIdex--;
-                        }
-                    else
+                if (i - 1 > 0)
+                    if (b[i] > Numbers[i])
                     {
-                        if (Numbers.Count - i > 1)
+                        var preIdex = 0;
+                        if (Numbers[i - 1] <= 0)
+                            while (Numbers[Numbers.Count - i - 1 + preIdex] <= 0
+                                   && (Numbers.Count + preIdex > 1)
+                                   && HasMore10sToLend(i - preIdex))
+                            {
+                                Borrow10(i - preIdex);
+                                preIdex--;
+                            }
+                        else
+                        {
                             Borrow10(i);
+                        }
                     }
-                }
-                var idx = i; // Numbers.Count - i;
-                Numbers[idx] = Numbers[idx] - b[i];
+                //var idx = i; // Numbers.Count - i;
+                Numbers[i] = Numbers[i] - b[i];
             }
-            RemovesLeadingZeros(b);
-            RemovesLeadingZeros(Numbers);
             return this;
         }
 
@@ -232,8 +230,8 @@ namespace Assigment2.Models
         private void Borrow10(int index)
         {
             index = Math.Abs(index);
-            Numbers[Numbers.Count - index - 1] = Numbers[Numbers.Count - index - 1] + 10;
-            Numbers[Numbers.Count - index - 2] = Numbers[Numbers.Count - index - 2] - 1;
+            Numbers[index] = Numbers[index] + 10;
+            Numbers[index - 1] = Numbers[index - 1] - 1;
         }
 
         public bool Equals(ReallyBigNumber a)
@@ -276,14 +274,15 @@ namespace Assigment2.Models
             return a;
         }
 
-        private List<long> RemovesLeadingZeros(List<long> tooLongList)
+        private void RemovesLeadingZeros(List<long> tooLongList)
         {
-            if (tooLongList.Count > 0 && tooLongList[0] == 0)
-            {
-            tooLongList.RemoveAt(0);
-            return RemovesLeadingZeros(tooLongList);
-            }
-            return tooLongList;
+            //if (tooLongList.Count <= 1)
+            //    return ;
+            //if (tooLongList.Count > 0 && tooLongList[0] == 0)
+            //{
+            //tooLongList.RemoveAt(0);
+            //RemovesLeadingZeros(tooLongList);
+            //}
         }
 
         public ReallyBigNumber Remainder(long b)
@@ -315,8 +314,7 @@ namespace Assigment2.Models
                 return this;
             while (this.IsBiggerOrEqualThan(b.Numbers))
             {
-                DividentSummation++;
-                if (Numbers.Count > b.Numbers.Count && !Equals(new ReallyBigNumber("0")) && Numbers.Count > 1)
+                if (IsSmallerOrEqualThanHalf(b) && !Equals(new ReallyBigNumber("0")) && Numbers.Count > 1)
                 {
                     var dividentIncrease = 10;
                     AppendPaddingToList(b.Numbers);
@@ -324,18 +322,39 @@ namespace Assigment2.Models
                     {
                         Numbers = b.Numbers.ToList()
                     };
-                    for (int i = Numbers.Count - 2; i >= 0; i++)
+                    //for (int i = Numbers.Count - 2; i >= 0; i++)
+                    //{
+                    //    if (Numbers[i] > b.Numbers[i])
+                    //        extendedDivident.Multiply(dividentIncrease);
+                    //    else
+                    //    {
+                    //        break;
+                    //    }
+                    //}
+
+                    while (IsSmallerOrEqualThanHalf(extendedDivident))
                     {
-                        if (Numbers[i] > b.Numbers[i])
-                            extendedDivident.Multiply(dividentIncrease);
+                        var compare = new ReallyBigNumber("0")
+                        {
+                            Numbers = extendedDivident.Numbers.ToList()
+                        };
+                        compare.Multiply(dividentIncrease);
+                        if (IsBiggerOrEqualThan(compare.Numbers))
+                        {
+                            extendedDivident.Numbers = compare.Numbers.ToList();
+                            DividentSummation++;
+                        }
                         else
                         {
-                            break;
+                            Subtraction(extendedDivident.Numbers);
                         }
                     }
                 }
                 else
+                {
+                    DividentSummation++;
                     this.Subtraction(b.Numbers);
+                }
             }
             b.RemovesLeadingZeros(Numbers);
             return this;
@@ -358,13 +377,19 @@ namespace Assigment2.Models
                 else break;
             }
             var isBigger = true;
-            for (var i = Numbers.Count - 1; i >= 0; i--)
+            //for (var i = Numbers.Count - 1; i >= 0; i--)
+            //{
+            //    //                if (inputList[i] != 0 && Numbers[i] != 0)
+            //    isBigger = a[i] <= Numbers[i];
+            //}
+            for (int i = 0; i < Numbers.Count; i++)
             {
-                //                if (inputList[i] != 0 && Numbers[i] != 0)
-                isBigger = a[i] <= Numbers[i];
+                if (Numbers[i] < a[i])
+                {
+                    isBigger = false;
+                }
+                break;
             }
-            RemovesLeadingZeros(a);
-            RemovesLeadingZeros(Numbers);
             return isBigger;
         }
 
@@ -399,8 +424,8 @@ namespace Assigment2.Models
         {
             var isSmaller = true;
 
-//            if (b.Numbers.Count > Numbers.Count/2 + 1)
-//                return false;
+            // if (b.Numbers.Count > Numbers.Count/2 + 1)
+            // return false;
             if (b.Numbers.Count != Numbers.Count)
                 AppendPaddingToList(b.Numbers);
 
@@ -446,57 +471,15 @@ namespace Assigment2.Models
                     isSmaller = false;
                     break;
                 }
-                else
-                {
-                }
+
                 if ((b.Numbers[idx] + (b.Numbers[idx]*10) >= Numbers[idx] + (Numbers[idx]*10)))
                 {
                     isSmaller = false;
                     break;
                 }
-                else
-                {
-                }
+
                 idx++;
             }
-            //if (Numbers.Count % 2 == 0)
-            //{
-            //    for (var i = Numbers.Count / 2; i < b.Numbers.Count; i++)
-            //    {
-            //        if (Numbers.Count > 1)
-            //        {
-            //            if (b.Numbers[i] + (b.Numbers[i - 1] * 10) >= Numbers[i] + (Numbers[i - 1] * 10)) break;
-            //            isSmaller = true;
-            //            break;
-            //        }
-            //        else
-            //        {
-            //            isSmaller = Numbers[0] >= b.Numbers[0];
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    var bValue = 0;
-            //    var NValue = 0;
-            //    for (var i = Numbers.Count / 2; i < b.Numbers.Count; i++)
-            //    {
-            //        if (b.Numbers[i] < Numbers[i])
-            //        {
-            //            isSmaller = true;
-            //            break;
-            //        }
-            //        if (b.Numbers[i] != Numbers[i]) continue;
-            //        bValue += b.Numbers[i] * 10;
-            //        NValue += Numbers[i] * 10;
-
-            //        if (bValue >= NValue) continue;
-            //        isSmaller = true;
-            //        break;
-            //    }
-            //} 
-            RemovesLeadingZeros(b.Numbers);
-            RemovesLeadingZeros(Numbers);
             return isSmaller;
         }
 
@@ -623,6 +606,16 @@ namespace Assigment2.Models
                 counter.Addition(1);
             }
             return modPow;
+        }
+
+        public static string GetBinaries(string numbers)
+        {
+            var sb = new StringBuilder();
+            foreach (var number in numbers)
+            {
+                sb.Append(Convert.ToString(number, 2));
+            }
+            return sb.ToString();
         }
     }
 }

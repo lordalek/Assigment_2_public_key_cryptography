@@ -94,11 +94,11 @@ namespace Assigment2.Logic
             for (var i = 0; i < plaintText.Length - 1; i += 2)
             {
                 var encrpytedValues =
-                    new ReallyBigNumber(plaintText[i].ToString() + plaintText[i + 1].ToString(), true);
+                    new ReallyBigNumber(plaintText[i].ToString() + 100+ plaintText[i + 1].ToString() + 100, true);
                 encrpytedValues = encrpytedValues.ModPow(n, e);
                 sb.Append(encrpytedValues.ToString());
             }
-            return sb.ToString();
+            return ReallyBigNumber.GetBinaries(sb.ToString());
         }
 
         public string Decrpyt(Models.ReallyBigNumber n, string cipherText, Models.ReallyBigNumber d)

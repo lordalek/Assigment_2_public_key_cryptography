@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Threading;
 using Assigment2.Models;
 using NUnit.Core;
 using NUnit.Framework;
@@ -255,32 +256,40 @@ namespace ModelTests
         [Test]
         public void Test10M10AsBigNumberExpect100()
         {
-            Assert.IsTrue(new ReallyBigNumber("10").Multiply(new ReallyBigNumber("10")).Equals(new ReallyBigNumber("100")));
+            Assert.IsTrue(
+                new ReallyBigNumber("10").Multiply(new ReallyBigNumber("10")).Equals(new ReallyBigNumber("100")));
         }
 
         [Test]
         public void Test10M15AsBigNumberExpect150()
         {
-            Assert.IsTrue(new ReallyBigNumber("10").Multiply(new ReallyBigNumber("15")).Equals(new ReallyBigNumber("150")));
+            Assert.IsTrue(
+                new ReallyBigNumber("10").Multiply(new ReallyBigNumber("15")).Equals(new ReallyBigNumber("150")));
         }
 
         [Test]
         public void TEst100T200expect20000()
         {
-            Assert.IsTrue(new ReallyBigNumber("100").Multiply(new ReallyBigNumber("200")).Equals(new ReallyBigNumber("20000")));
+            var a = new ReallyBigNumber("100");
+            var b = new ReallyBigNumber("200");
+            a = a.Multiply(b);
+            Assert.IsTrue(a.Equals(new ReallyBigNumber("20000")));
         }
 
         [Test]
         public void TEst1000T2000expect2000000()
         {
-            Assert.IsTrue(new ReallyBigNumber("1000").Multiply(new ReallyBigNumber("2000")).Equals(new ReallyBigNumber("2000000")));
+            Assert.IsTrue(
+                new ReallyBigNumber("1000").Multiply(new ReallyBigNumber("2000")).Equals(new ReallyBigNumber("2000000")));
         }
 
         [Test]
         public void TEst1234T2234expect2756756()
         {
-            Assert.IsTrue(new ReallyBigNumber("1234").Multiply(new ReallyBigNumber("2234")).Equals(new ReallyBigNumber("2756756")));
+            Assert.IsTrue(
+                new ReallyBigNumber("1234").Multiply(new ReallyBigNumber("2234")).Equals(new ReallyBigNumber("2756756")));
         }
+
 //
 //        [Test]
 //        public void TestCalculationOfNForOverFlow()
@@ -315,13 +324,12 @@ namespace ModelTests
             Assert.IsTrue(new ReallyBigNumber("1").Equals(gcd));
         }
 
-        [Test]
-        public void TestEncrpyForByteValues()
-        {
-            var rsa = new RSA();
-            var bytes = rsa.Encrpypt(new ReallyBigNumber("1000"), "Ha", new ReallyBigNumber("3"));
-
-        }
+        //[Test]
+        //public void TestEncrpyForByteValues()
+        //{
+        //    var rsa = new RSA();
+        //    var bytes = rsa.Encrpypt(new ReallyBigNumber("1000"), "Ha", new ReallyBigNumber("3"));
+        //}
 
         [Test]
         public void TestPowOf3pow3()
@@ -340,16 +348,21 @@ namespace ModelTests
         {
             Assert.IsTrue(new ReallyBigNumber("4").Pow(6).Equals(new ReallyBigNumber("4096")));
         }
+
         [Test]
         public void TestMod3Pow2of4()
         {
-            Assert.IsTrue(new ReallyBigNumber("4").ModPow(new ReallyBigNumber("3"), new ReallyBigNumber("2")).Equals(new ReallyBigNumber("1")));
+            Assert.IsTrue(
+                new ReallyBigNumber("4").ModPow(new ReallyBigNumber("3"), new ReallyBigNumber("2"))
+                    .Equals(new ReallyBigNumber("1")));
         }
 
         [Test]
         public void TestMod23Pow2of5()
         {
-            Assert.IsTrue(new ReallyBigNumber("5").ModPow(new ReallyBigNumber("23"), new ReallyBigNumber("2")).Equals(new ReallyBigNumber("2")));
+            Assert.IsTrue(
+                new ReallyBigNumber("5").ModPow(new ReallyBigNumber("23"), new ReallyBigNumber("2"))
+                    .Equals(new ReallyBigNumber("2")));
         }
 
         [Test]
