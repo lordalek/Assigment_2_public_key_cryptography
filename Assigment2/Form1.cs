@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Assigment2.Logic;
@@ -195,21 +193,16 @@ namespace Assigment2
                     this.lbErrors.Text = "";
                     rsa.Prime1 = new ReallyBigNumber(txtPrime1.Text);
                     rsa.Prime2 = new ReallyBigNumber(txtPrime2.Text);
-                    
-                    SetProgressLabel("Processing N");
-                   
+
                     rsa.N = rsa.CalculateN(rsa.Prime1, rsa.Prime2);
-                    rTxtN.Text = rsa.N.ToString();
-                    SetProgressLabel("Processing Phi");
                     rsa.Phi = rsa.CaluculatePhi(rsa.Prime1, rsa.Prime2);
-                    rTxtPhi.Text = rsa.Phi.ToString();
-                    SetProgressLabel("Processing Variable E");
                     rsa.VariableE = rsa.SelectERelativeToPhiAndSmallerThanPhi(rsa.Phi, rsa.N);
-                    rTxtVE.Text = rsa.VariableE.ToString();
-                    SetProgressLabel("Processing D");
                     rsa.VariableD = rsa.DetermineDAs1AndSMallerThanPhi(rsa.Phi, rsa.VariableE);
+
+                    rTxtN.Text = rsa.N.ToString();
+                    rTxtPhi.Text = rsa.Phi.ToString();
                     rTxtVD.Text = rsa.VariableD.ToString();
-                    lbProgress.Text = "Done";
+                    rTxtVE.Text = rsa.VariableE.ToString();
                 }
             }
             catch (Exception ex)
@@ -224,13 +217,9 @@ namespace Assigment2
             }
         }
 
-        private void SetProgressLabel(string primaryString)
-        {
-            lbProgress.Text = primaryString;
-        }
-
         private void btnLoad_Click(object sender, EventArgs e)
         {
+
         }
     }
 }

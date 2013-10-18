@@ -40,10 +40,6 @@
             this.txtInput = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rTxtVD = new System.Windows.Forms.RichTextBox();
-            this.rTxtN = new System.Windows.Forms.RichTextBox();
-            this.rTxtPhi = new System.Windows.Forms.RichTextBox();
-            this.rTxtVE = new System.Windows.Forms.RichTextBox();
             this.btnInsertCT = new System.Windows.Forms.Button();
             this.btnInsertPT = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
@@ -69,6 +65,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.lbErrors = new System.Windows.Forms.Label();
+            this.rTxtVE = new System.Windows.Forms.RichTextBox();
+            this.rTxtPhi = new System.Windows.Forms.RichTextBox();
+            this.rTxtVD = new System.Windows.Forms.RichTextBox();
+            this.rTxtN = new System.Windows.Forms.RichTextBox();
             this.lbProgress = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -186,42 +186,6 @@
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Set Variables";
-            // 
-            // rTxtVD
-            // 
-            this.rTxtVD.Enabled = false;
-            this.rTxtVD.Location = new System.Drawing.Point(128, 114);
-            this.rTxtVD.Name = "rTxtVD";
-            this.rTxtVD.Size = new System.Drawing.Size(100, 20);
-            this.rTxtVD.TabIndex = 12;
-            this.rTxtVD.Text = "";
-            // 
-            // rTxtN
-            // 
-            this.rTxtN.Enabled = false;
-            this.rTxtN.Location = new System.Drawing.Point(128, 164);
-            this.rTxtN.Name = "rTxtN";
-            this.rTxtN.Size = new System.Drawing.Size(100, 20);
-            this.rTxtN.TabIndex = 12;
-            this.rTxtN.Text = "";
-            // 
-            // rTxtPhi
-            // 
-            this.rTxtPhi.Enabled = false;
-            this.rTxtPhi.Location = new System.Drawing.Point(128, 139);
-            this.rTxtPhi.Name = "rTxtPhi";
-            this.rTxtPhi.Size = new System.Drawing.Size(100, 20);
-            this.rTxtPhi.TabIndex = 12;
-            this.rTxtPhi.Text = "";
-            // 
-            // rTxtVE
-            // 
-            this.rTxtVE.Enabled = false;
-            this.rTxtVE.Location = new System.Drawing.Point(128, 88);
-            this.rTxtVE.Name = "rTxtVE";
-            this.rTxtVE.Size = new System.Drawing.Size(100, 20);
-            this.rTxtVE.TabIndex = 12;
-            this.rTxtVE.Text = "";
             // 
             // btnInsertCT
             // 
@@ -447,14 +411,49 @@
             this.lbErrors.Size = new System.Drawing.Size(0, 13);
             this.lbErrors.TabIndex = 13;
             // 
+            // rTxtVE
+            // 
+            this.rTxtVE.Enabled = false;
+            this.rTxtVE.Location = new System.Drawing.Point(128, 88);
+            this.rTxtVE.Name = "rTxtVE";
+            this.rTxtVE.Size = new System.Drawing.Size(100, 20);
+            this.rTxtVE.TabIndex = 12;
+            this.rTxtVE.Text = "";
+            // 
+            // rTxtPhi
+            // 
+            this.rTxtPhi.Enabled = false;
+            this.rTxtPhi.Location = new System.Drawing.Point(128, 139);
+            this.rTxtPhi.Name = "rTxtPhi";
+            this.rTxtPhi.Size = new System.Drawing.Size(100, 20);
+            this.rTxtPhi.TabIndex = 12;
+            this.rTxtPhi.Text = "";
+            // 
+            // rTxtVD
+            // 
+            this.rTxtVD.Enabled = false;
+            this.rTxtVD.Location = new System.Drawing.Point(128, 114);
+            this.rTxtVD.Name = "rTxtVD";
+            this.rTxtVD.Size = new System.Drawing.Size(100, 20);
+            this.rTxtVD.TabIndex = 12;
+            this.rTxtVD.Text = "";
+            // 
+            // rTxtN
+            // 
+            this.rTxtN.Enabled = false;
+            this.rTxtN.Location = new System.Drawing.Point(128, 164);
+            this.rTxtN.Name = "rTxtN";
+            this.rTxtN.Size = new System.Drawing.Size(100, 20);
+            this.rTxtN.TabIndex = 12;
+            this.rTxtN.Text = "";
+            // 
             // lbProgress
             // 
             this.lbProgress.AutoSize = true;
             this.lbProgress.Location = new System.Drawing.Point(311, 42);
             this.lbProgress.Name = "lbProgress";
-            this.lbProgress.Size = new System.Drawing.Size(14, 13);
+            this.lbProgress.Size = new System.Drawing.Size(0, 13);
             this.lbProgress.TabIndex = 14;
-            this.lbProgress.Text = "T";
             // 
             // Form1
             // 
