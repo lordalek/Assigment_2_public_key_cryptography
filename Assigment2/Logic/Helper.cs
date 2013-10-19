@@ -11,7 +11,10 @@ namespace Assigment2.Logic
                 return new RsaInfo();
 
             var cryptionInfo = new RsaInfo();
-            cryptionInfo.Load(Path.Combine(path, "RSAInfo.xml"));
+            path = Path.Combine(path, "RSAInfo.xml");
+            if (!File.Exists(path))
+                return cryptionInfo;
+            cryptionInfo.Load(path);
             return cryptionInfo;
         }
 

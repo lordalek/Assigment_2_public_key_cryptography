@@ -15,7 +15,8 @@ namespace Assigment2.Models
     {
         public List<long> Numbers = new List<long>();
         public long DividentSummation { get; set; }
-
+        public static string EscapeString = "xxyxxzA";
+       
         public bool IsPrime(ReallyBigNumber bigNumber)
         {
             var isPrime = bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 != 0;
@@ -579,6 +580,29 @@ namespace Assigment2.Models
                 counter.Addition(1);
             }
             return modPow;
+        }
+
+        public static string GetBinaries(string numbers)
+        {
+            var sb = new StringBuilder();
+            foreach (var number in numbers)
+            {
+                sb.Append(Convert.ToString(number, 2));
+            }
+            return sb.ToString();
+        }
+
+        public static ReallyBigNumber ConCatBigNumber(ReallyBigNumber a, ReallyBigNumber b)
+        {
+            if (a == null)
+                a = new ReallyBigNumber(EscapeString);
+            if (b == null)
+                b = new ReallyBigNumber(EscapeString);
+            for (int i = 0; i < b.Numbers.Count; i++)
+            {
+                a.Numbers.Add(b.Numbers[i]);
+            }
+            return a;
         }
     }
 }

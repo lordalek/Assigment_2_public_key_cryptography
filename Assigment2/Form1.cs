@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,12 @@ namespace Assigment2
                 System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ??
                 string.Empty;
             rsa = new RSA();
+            PopulateMetaData();
+        }
+
+        private void PopulateMetaData()
+        {
+           btnLoad_Click(null, null);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -84,14 +91,14 @@ namespace Assigment2
                 {
                     errorProvider1.Clear();
                     this.lbErrors.Text = "";
-                    var encryptedText = rsa.Encrpypt(rsa.N, this.txtInput.Text, rsa.VariableD);
+                    var encryptedText = rsa.Encrpypt(rsa.N, this.txtInput.Text, rsa.VariableE);
                     this.rTxtEncrpyted.Tag = encryptedText;
                     this.rTxtEncrpyted.Text = encryptedText.ToString();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unable to calculate. Error: " + Environment.NewLine + ex.Message, "Error",
+                MessageBox.Show("Unable to encrypt. Error: " + Environment.NewLine + ex.Message, "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
@@ -126,12 +133,14 @@ namespace Assigment2
 
                 var info = new RsaInfo()
                 {
-                    N = rsa.N ?? new ReallyBigNumber("0"),
-                    Phi = rsa.Phi ?? new ReallyBigNumber("0"),
-                    Prime2 = rsa.Prime1 ?? new ReallyBigNumber("0"),
-                    Prime1 = rsa.Prime2 ?? new ReallyBigNumber("0"),
-                    VariableE = rsa.VariableE ?? new ReallyBigNumber("0"),
-                    VariableD = rsa.VariableD ?? new ReallyBigNumber("0")
+                    N = rsa.N.ToString(),
+                    Phi = rsa.Phi.ToString(),
+                    Prime2 = txtPrime1.Text,
+                    Prime1 = txtPrime2.Text,
+                    VariableE = rsa.VariableE.ToString(),
+                    VariableD = rsa.VariableD.ToString(),
+                    CipherText = txtCipherText.Text ?? string.Empty,
+                    PlainText = txtPlaintext.Text ?? string.Empty
                 };
                 Helper.SaveCryptionInfo(info, txtXMLPath.Text);
             }
@@ -219,7 +228,117 @@ namespace Assigment2
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
+            var info = Helper.GetCryptionInfo(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
+            rsa = new RSA()
+            {
+                N = new ReallyBigNumber(info.N),
+                Phi = new ReallyBigNumber(info.Phi),
+                VariableE = new ReallyBigNumber(info.VariableE),
+                VariableD = new ReallyBigNumber(info.VariableE),
+                Prime2 = new ReallyBigNumber(info.Prime2),
+                Prime1 = new ReallyBigNumber(info.Prime1)
+            };
+            this.rTxtVD.Text = info.VariableD;
+            this.rTxtVE.Text = info.VariableE;
+            this.rTxtPhi.Text = info.Phi;
+            this.rTxtN.Text = info.N;
+            this.txtPrime1.Text = info.Prime1;
+            this.txtPrime2.Text = info.Prime2;
+            this.rTxtDecrypted.Text = info.PlainText;
+            this.txtPlaintext.Text = info.PlainText;
+            this.txtCipherText.Text = info.PlainText;
+            this.rTxtEncrpyted.Text = info.CipherText;
 
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if(rTxtEncrpyted.Tag == null)
+                    throw new NullReferenceException("rTxtEncrypted.Tag");
+                this.txtInput.Text = (string) rTxtEncrpyted.Tag;
+                this.txtCipherText.Text = (string)rTxtEncrpyted.Tag;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to copy. Error: " + Environment.NewLine + ex.Message, "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCopyDecryptedText_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rTxtDecrypted.Tag == null)
+                    throw new NullReferenceException("rTxtDecrypted.Tag");
+                this.txtInput.Text = (string)rTxtDecrypted.Tag;
+                this.txtPlaintext.Text = (string)rTxtEncrpyted.Tag;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to copy. Error: " + Environment.NewLine + ex.Message, "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnInsertPT_Click(object sender, EventArgs e)
+        {
+            if(string.IsNullOrEmpty(this.txtPlaintext.Text))
+                return;
+            this.txtInput.Text = this.txtPlaintext.Text;
+        }
+
+        private void btnInsertCT_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(this.txtCipherText.Text))
+                return;
+            this.txtInput.Text = this.txtCipherText.Text;
+        }
+
+        private void btnDecrypt_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                var hasErrors = false;
+                if (this.txtInput.Text.Length <= 0)
+                {
+                    errorProvider1.SetError(this.txtInput, "Blank input not allowed");
+                    this.lbErrors.Text = "Blank input not allowed";
+                    hasErrors = true;
+                }
+                if (rsa.N == null || rsa.Phi == null || rsa.Prime1 == null || rsa.Prime1 == null ||
+                    rsa.VariableD == null || rsa.VariableE == null)
+                {
+                    errorProvider1.SetError(this.btnCalculate, "Parametres are not initialized");
+                    this.lbErrors.Text = "Parametres are not initialized";
+                    hasErrors = true;
+                }
+                if (!hasErrors)
+                {
+                    errorProvider1.Clear();
+                    this.lbErrors.Text = "";
+                    var encryptedText = rsa.Decrpyt(rsa.N, this.txtInput.Text, rsa.VariableD);
+                    this.rTxtDecrypted.Tag = encryptedText;
+                    this.rTxtDecrypted.Text = encryptedText.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to calculate. Error: " + Environment.NewLine + ex.Message, "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+                
         }
     }
 }

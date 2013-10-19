@@ -40,6 +40,10 @@
             this.txtInput = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rTxtVD = new System.Windows.Forms.RichTextBox();
+            this.rTxtN = new System.Windows.Forms.RichTextBox();
+            this.rTxtPhi = new System.Windows.Forms.RichTextBox();
+            this.rTxtVE = new System.Windows.Forms.RichTextBox();
             this.btnInsertCT = new System.Windows.Forms.Button();
             this.btnInsertPT = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
@@ -62,14 +66,11 @@
             this.rTxtDecrypted = new System.Windows.Forms.RichTextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnCopyEncrpytedText = new System.Windows.Forms.Button();
+            this.btnCopyDecryptedText = new System.Windows.Forms.Button();
             this.lbErrors = new System.Windows.Forms.Label();
-            this.rTxtVE = new System.Windows.Forms.RichTextBox();
-            this.rTxtPhi = new System.Windows.Forms.RichTextBox();
-            this.rTxtVD = new System.Windows.Forms.RichTextBox();
-            this.rTxtN = new System.Windows.Forms.RichTextBox();
             this.lbProgress = new System.Windows.Forms.Label();
+            this.btnDecrypt = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -187,6 +188,42 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Set Variables";
             // 
+            // rTxtVD
+            // 
+            this.rTxtVD.Enabled = false;
+            this.rTxtVD.Location = new System.Drawing.Point(128, 114);
+            this.rTxtVD.Name = "rTxtVD";
+            this.rTxtVD.Size = new System.Drawing.Size(100, 20);
+            this.rTxtVD.TabIndex = 12;
+            this.rTxtVD.Text = "";
+            // 
+            // rTxtN
+            // 
+            this.rTxtN.Enabled = false;
+            this.rTxtN.Location = new System.Drawing.Point(128, 164);
+            this.rTxtN.Name = "rTxtN";
+            this.rTxtN.Size = new System.Drawing.Size(100, 20);
+            this.rTxtN.TabIndex = 12;
+            this.rTxtN.Text = "";
+            // 
+            // rTxtPhi
+            // 
+            this.rTxtPhi.Enabled = false;
+            this.rTxtPhi.Location = new System.Drawing.Point(128, 139);
+            this.rTxtPhi.Name = "rTxtPhi";
+            this.rTxtPhi.Size = new System.Drawing.Size(100, 20);
+            this.rTxtPhi.TabIndex = 12;
+            this.rTxtPhi.Text = "";
+            // 
+            // rTxtVE
+            // 
+            this.rTxtVE.Enabled = false;
+            this.rTxtVE.Location = new System.Drawing.Point(128, 88);
+            this.rTxtVE.Name = "rTxtVE";
+            this.rTxtVE.Size = new System.Drawing.Size(100, 20);
+            this.rTxtVE.TabIndex = 12;
+            this.rTxtVE.Text = "";
+            // 
             // btnInsertCT
             // 
             this.btnInsertCT.Location = new System.Drawing.Point(100, 354);
@@ -195,6 +232,7 @@
             this.btnInsertCT.TabIndex = 11;
             this.btnInsertCT.Text = "Insert ciphertext";
             this.btnInsertCT.UseVisualStyleBackColor = true;
+            this.btnInsertCT.Click += new System.EventHandler(this.btnInsertCT_Click);
             // 
             // btnInsertPT
             // 
@@ -204,6 +242,7 @@
             this.btnInsertPT.TabIndex = 10;
             this.btnInsertPT.Text = "Insert plaintext";
             this.btnInsertPT.UseVisualStyleBackColor = true;
+            this.btnInsertPT.Click += new System.EventHandler(this.btnInsertPT_Click);
             // 
             // label12
             // 
@@ -384,23 +423,25 @@
             this.label14.TabIndex = 11;
             this.label14.Text = "Decrypted text";
             // 
-            // button1
+            // btnCopyEncrpytedText
             // 
-            this.button1.Location = new System.Drawing.Point(349, 301);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(191, 23);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Copy encrpyted text to input field";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnCopyEncrpytedText.Location = new System.Drawing.Point(349, 301);
+            this.btnCopyEncrpytedText.Name = "btnCopyEncrpytedText";
+            this.btnCopyEncrpytedText.Size = new System.Drawing.Size(191, 23);
+            this.btnCopyEncrpytedText.TabIndex = 12;
+            this.btnCopyEncrpytedText.Text = "Copy encrpyted text to input field";
+            this.btnCopyEncrpytedText.UseVisualStyleBackColor = true;
+            this.btnCopyEncrpytedText.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btnCopyDecryptedText
             // 
-            this.button2.Location = new System.Drawing.Point(349, 520);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(191, 23);
-            this.button2.TabIndex = 12;
-            this.button2.Text = "Copy dencrpyted text to input field";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnCopyDecryptedText.Location = new System.Drawing.Point(349, 520);
+            this.btnCopyDecryptedText.Name = "btnCopyDecryptedText";
+            this.btnCopyDecryptedText.Size = new System.Drawing.Size(191, 23);
+            this.btnCopyDecryptedText.TabIndex = 12;
+            this.btnCopyDecryptedText.Text = "Copy dencrpyted text to input field";
+            this.btnCopyDecryptedText.UseVisualStyleBackColor = true;
+            this.btnCopyDecryptedText.Click += new System.EventHandler(this.btnCopyDecryptedText_Click);
             // 
             // lbErrors
             // 
@@ -411,42 +452,6 @@
             this.lbErrors.Size = new System.Drawing.Size(0, 13);
             this.lbErrors.TabIndex = 13;
             // 
-            // rTxtVE
-            // 
-            this.rTxtVE.Enabled = false;
-            this.rTxtVE.Location = new System.Drawing.Point(128, 88);
-            this.rTxtVE.Name = "rTxtVE";
-            this.rTxtVE.Size = new System.Drawing.Size(100, 20);
-            this.rTxtVE.TabIndex = 12;
-            this.rTxtVE.Text = "";
-            // 
-            // rTxtPhi
-            // 
-            this.rTxtPhi.Enabled = false;
-            this.rTxtPhi.Location = new System.Drawing.Point(128, 139);
-            this.rTxtPhi.Name = "rTxtPhi";
-            this.rTxtPhi.Size = new System.Drawing.Size(100, 20);
-            this.rTxtPhi.TabIndex = 12;
-            this.rTxtPhi.Text = "";
-            // 
-            // rTxtVD
-            // 
-            this.rTxtVD.Enabled = false;
-            this.rTxtVD.Location = new System.Drawing.Point(128, 114);
-            this.rTxtVD.Name = "rTxtVD";
-            this.rTxtVD.Size = new System.Drawing.Size(100, 20);
-            this.rTxtVD.TabIndex = 12;
-            this.rTxtVD.Text = "";
-            // 
-            // rTxtN
-            // 
-            this.rTxtN.Enabled = false;
-            this.rTxtN.Location = new System.Drawing.Point(128, 164);
-            this.rTxtN.Name = "rTxtN";
-            this.rTxtN.Size = new System.Drawing.Size(100, 20);
-            this.rTxtN.TabIndex = 12;
-            this.rTxtN.Text = "";
-            // 
             // lbProgress
             // 
             this.lbProgress.AutoSize = true;
@@ -455,13 +460,24 @@
             this.lbProgress.Size = new System.Drawing.Size(0, 13);
             this.lbProgress.TabIndex = 14;
             // 
+            // btnDecrypt
+            // 
+            this.btnDecrypt.Location = new System.Drawing.Point(94, 32);
+            this.btnDecrypt.Name = "btnDecrypt";
+            this.btnDecrypt.Size = new System.Drawing.Size(75, 23);
+            this.btnDecrypt.TabIndex = 15;
+            this.btnDecrypt.Text = "Decrpyt";
+            this.btnDecrypt.UseVisualStyleBackColor = true;
+            this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1088, 565);
+            this.Controls.Add(this.btnDecrypt);
             this.Controls.Add(this.lbProgress);
             this.Controls.Add(this.lbErrors);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnCopyDecryptedText);
+            this.Controls.Add(this.btnCopyEncrpytedText);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.rTxtDecrypted);
@@ -520,14 +536,15 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.RichTextBox rTxtDecrypted;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnCopyDecryptedText;
+        private System.Windows.Forms.Button btnCopyEncrpytedText;
         private System.Windows.Forms.Label lbErrors;
         private System.Windows.Forms.RichTextBox rTxtVD;
         private System.Windows.Forms.RichTextBox rTxtN;
         private System.Windows.Forms.RichTextBox rTxtPhi;
         private System.Windows.Forms.RichTextBox rTxtVE;
         private System.Windows.Forms.Label lbProgress;
+        private System.Windows.Forms.Button btnDecrypt;
     }
 }
 

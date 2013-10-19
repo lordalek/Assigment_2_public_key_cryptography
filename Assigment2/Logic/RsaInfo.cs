@@ -4,11 +4,13 @@ namespace Assigment2.Logic
 {
     public class RsaInfo : XmlSerializable
     {
-        public ReallyBigNumber VariableD { get; set; }
-        public ReallyBigNumber VariableE { get; set; }
-        public ReallyBigNumber Phi { get; set; }
-        public ReallyBigNumber N { get; set; }
-        public ReallyBigNumber Prime1 { get; set; }
-        public ReallyBigNumber Prime2 { get; set; }
+        public string VariableD { get; set; }
+        public string VariableE { get; set; }
+        public string Phi { get; set; }
+        public string N { get; set; }
+        public string Prime1 { get; set; }
+        public string Prime2 { get; set; }
+        public string PlainText{ get; set; }
+        public string CipherText { get; set; }
     }
 }
