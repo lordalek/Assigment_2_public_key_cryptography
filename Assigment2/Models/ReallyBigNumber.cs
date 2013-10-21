@@ -243,6 +243,7 @@ namespace Assigment2.Models
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         private bool HasMoreToLend(int idx)
         {
             if (idx >= Numbers.Count - 1)
@@ -252,6 +253,8 @@ namespace Assigment2.Models
             return (Numbers[idx] > 0);
         }
 
+=======
+>>>>>>> parent of 948ca5d... remainer expanded
 =======
 >>>>>>> parent of 948ca5d... remainer expanded
         private void Borrow10(int index)
