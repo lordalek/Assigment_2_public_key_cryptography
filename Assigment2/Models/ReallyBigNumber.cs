@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Policy;
@@ -243,6 +242,7 @@ namespace Assigment2.Models
             return HasMoreToLend(index);
         }
 
+<<<<<<< HEAD
         private bool HasMoreToLend(int idx)
         {
             if (idx >= Numbers.Count - 1)
@@ -252,6 +252,8 @@ namespace Assigment2.Models
             return (Numbers[idx] > 0);
         }
 
+=======
+>>>>>>> parent of 948ca5d... remainer expanded
         private void Borrow10(int index)
         {
             index = Math.Abs(index);
@@ -325,30 +327,12 @@ namespace Assigment2.Models
             while (this.IsBiggerOrEqualThan(b.Numbers))
             {
                 DividentSummation++;
-                var extendedSub = b.Numbers.ToList();
-                RemoveLeadingZeros(extendedSub);
-                while (extendedSub.Count < Numbers.Count - 1)
-                {
-                    extendedSub.Add(0L);
-                }
-                this.Subtraction(extendedSub);
+                this.Subtraction(b.Numbers);
             }
 
             return this;
         }
 
-        private void RemoveLeadingZeros(List<long> list)
-        {
-            while (list[0] == 0)
-            {
-                list.RemoveAt(0);
-            }
-            //if (list[i] == 0)
-
-            //else
-            //    break;
-            //}
-        }
 
         public bool IsBiggerOrEqualThan(List<long> a)
         {
@@ -366,32 +350,12 @@ namespace Assigment2.Models
                 else break;
             }
             var isBigger = true;
-            //for (var i = Numbers.Count - 1; i >= 0; i--)
-            //{
-            //    //                if (inputList[i] != 0 && Numbers[i] != 0)
-            //    //isBigger = a[i] <= Numbers[i];
-            //    //if (a[i] >= Numbers[i] && Numbers[i] > 0)
-            //    //{
-            //    //    isBigger = true;
-            //    //    break;
-            //    //}
-            //    if (Numbers[i] <= a[i] && Numbers[i +1] <= a[i +1])
-            //    {
-            //        isBigger = false;
-            //        break;
-            //    }
-            //}
-            isBigger = isBigOrEqThan(a, 0);
+            for (var i = Numbers.Count - 1; i >= 0; i--)
+            {
+                //                if (inputList[i] != 0 && Numbers[i] != 0)
+                isBigger = a[i] <= Numbers[i];
+            }
             return isBigger;
-        }
-
-        private bool isBigOrEqThan(List<long> list, int idx)
-        {
-            if (idx >= list.Count - 1)
-                return Numbers[idx] >= list[idx];
-            if (Numbers[idx] == list[idx])
-                return isBigOrEqThan(list, ++idx);
-            return (Numbers[idx] >= list[idx]);
         }
 
         public bool IsBigger(List<long> a)
