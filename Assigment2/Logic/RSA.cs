@@ -112,7 +112,7 @@ namespace Assigment2.Logic
             if (cipherText == null) throw new ArgumentNullException("cipherText");
             if (d == null) throw new ArgumentNullException("d");
             var sb = new StringBuilder();
-            while ((cipherText.Length -1) % 16 != 0)
+            while ((cipherText.Length - 1)%16 != 0)
             {
                 cipherText = cipherText.Insert(0, "0");
             }
@@ -128,6 +128,8 @@ namespace Assigment2.Logic
                 decryptedNumbers = decryptedNumbers.ModPow(n, d);
                 var tempT = decryptedNumbers.Numbers[0].ToString() + decryptedNumbers.Numbers[1].ToString() +
                             decryptedNumbers.Numbers[2].ToString();
+                if (decryptedNumbers.Numbers.Count < 6)
+                    decryptedNumbers.Numbers.Insert(3, 0L);
                 var tempY = decryptedNumbers.Numbers[3].ToString() + decryptedNumbers.Numbers[4].ToString() +
                             decryptedNumbers.Numbers[5].ToString();
                 Byte tempByte = 0;
@@ -137,13 +139,29 @@ namespace Assigment2.Logic
                 Byte.TryParse(tempY, out tempByte);
                 sb.Append(tempByte.ToString());
             }
-            return sb.ToString();
+            return ConvertToString(sb.ToString());
         }
 
         public byte ConvertBinaryToByte(string binary)
         {
             var dec = Convert.ToInt32(binary, 2);
             return Byte.Parse(dec.ToString());
+        }
+
+        public string ConvertToString(string numbers)
+        {
+            while (numbers.Length%3 != 0)
+            {
+                numbers = numbers.Insert(0, "0");
+            }
+
+            var sb = new StringBuilder();
+            for (int i = 0; i < numbers.Length; i += 3)
+            {
+                var nums = numbers.Substring(i, 3);
+                sb.Append(Encoding.UTF8.GetString(new byte[int.Parse(nums)]));
+            }
+            return sb.ToString();
         }
     }
 }
