@@ -240,7 +240,7 @@ namespace Assigment2.Models
             //    //return true;
             //    break;
             //}
-            return hasMore10sToLend;
+            return HasMoreToLend(index);
         }
 
         private bool HasMoreToLend(int idx)
@@ -248,7 +248,7 @@ namespace Assigment2.Models
             if (idx >= Numbers.Count - 1)
                 return Numbers[idx] > 0;
             if (Numbers[idx] == 0)
-                return HasMoreToLend(++idx);
+                return HasMoreToLend(--idx);
             return (Numbers[idx] > 0);
         }
 
