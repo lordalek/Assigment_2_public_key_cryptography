@@ -16,7 +16,7 @@ namespace Assigment2.Models
         public List<long> Numbers = new List<long>();
         public long DividentSummation { get; set; }
         public static string EscapeString = "xxyxxzA";
-       
+
         public bool IsPrime(ReallyBigNumber bigNumber)
         {
             var isPrime = bigNumber.Numbers[bigNumber.Numbers.Count - 1]%2 != 0;
@@ -67,7 +67,7 @@ namespace Assigment2.Models
         {
             if (string.IsNullOrEmpty(bigNumberAsString))
                 throw new ArgumentNullException("bigNumberAsString");
-           
+
             foreach (var number in bigNumberAsString)
             {
                 Addition(long.Parse(Encoding.UTF8.GetBytes(number.ToString())[0].ToString()));
@@ -193,8 +193,11 @@ namespace Assigment2.Models
                                && (Numbers.Count + preIdex > 1)
                                && HasMore10sToLend(i - preIdex))
                         {
-                            Borrow10(i - preIdex);
-                            preIdex--;
+                            if (Numbers.Count - i > 1)
+                            {
+                                Borrow10(i - preIdex);
+                                preIdex--;
+                            }
                         }
                     else
                     {
@@ -219,11 +222,23 @@ namespace Assigment2.Models
         {
             var hasMore10sToLend = false;
             index = Math.Abs(index);
+            //if(index <= 0)
+            //    return false;
             for (var i = Numbers.Count - 2 - index; i >= 0; i--)
             {
                 if (Numbers[i] > 0)
+                {
                     hasMore10sToLend = true;
+                    break;
+                }
             }
+            //for (int i = index - 1; i >= 0; i--)
+            //{
+            //    if (Numbers[i] <= 0) continue;
+            //    hasMore10sToLend = true;
+            //    //return true;
+            //    break;
+            //}
             return hasMore10sToLend;
         }
 
@@ -453,7 +468,7 @@ namespace Assigment2.Models
 
             //        if (bValue >= NValue) continue;
             //        isSmaller = true;
-            //        break;
+            //        
             //    }
             //}
             return isSmaller;
