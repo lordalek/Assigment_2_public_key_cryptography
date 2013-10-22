@@ -16,6 +16,7 @@ namespace Assigment2
     public partial class Form1 : Form
     {
         public RSA rsa { get; set; }
+        public RSA64Bit Rsa64 { get; set; }
 
         public Form1()
         {
@@ -24,12 +25,21 @@ namespace Assigment2
                 System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ??
                 string.Empty;
             rsa = new RSA();
+            Rsa64 = new RSA64Bit();
+
             PopulateMetaData();
+            PopulateComboBox();
+        }
+
+        private void PopulateComboBox()
+        {
+            this.cboCryptoType.Items.Add("64 bit");
+            this.cboCryptoType.Items.Add("Unliminted bit, not working");
         }
 
         private void PopulateMetaData()
         {
-           btnLoad_Click(null, null);
+            btnLoad_Click(null, null);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -38,25 +48,65 @@ namespace Assigment2
             {
                 this.cbDecimals.Items.Add(i);
             }
+            for (int i = 1; i < 100; i++)
+            {
+                this.cboSeed.Items.Add(i);
+            }
         }
 
         private void btnGenerateRandomPrimeNumber_Click(object sender, EventArgs e)
         {
             try
             {
-                this.rTxtPrimeNumber.Text = string.Empty;
-                this.rTxtPrimeNumber.Tag = null;
-                if (this.cbDecimals.SelectedItem == null)
-                    return;
-                var seed = -1L;
-                long.TryParse(this.txtSeed.Text, out seed);
-                if (this.txtSeed.Text.Length <= 0 || seed <= 0)
-                    return;
                 this.Cursor = Cursors.WaitCursor;
-                var psRandomNumberino = new ReallyBigNumber("1").GetRandomPrime(seed,
-                    (long) this.cbDecimals.SelectedItem);
-                this.rTxtPrimeNumber.Text = psRandomNumberino.ToString();
-                this.rTxtPrimeNumber.Tag = psRandomNumberino;
+                var hasErrors = false;
+                if (this.cboCryptoType.SelectedItem == null)
+                {
+                    errorProvider1.SetError(this.cboCryptoType, "Please pick a type");
+                    this.lbErrors.Text = "Please pick a type";
+                    hasErrors = true;
+                }
+                if (this.cbDecimals.SelectedItem == null)
+                {
+                    errorProvider1.SetError(this.cbDecimals, "Please pick a value");
+                    this.lbErrors.Text = "Please pick a value";
+                    hasErrors = true;
+                }
+                if (this.cboSeed.Text.Length <= 0)
+                {
+                    errorProvider1.SetError(this.cboSeed, "Please pick a seed");
+                    this.lbErrors.Text = "Please pick a seed";
+                    hasErrors = true;
+                }
+                if (!hasErrors)
+                {
+                    errorProvider1.Clear();
+                    this.lbErrors.Text = "";
+
+                    this.rTxtPrimeNumber.Text = string.Empty;
+                    this.rTxtPrimeNumber.Tag = null;
+                    if (this.cboCryptoType.SelectedItem.ToString()
+                        .Equals("64 bit", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        var psRandomNumberino = RSA64Bit.GetRandomPrimeNumber(int.Parse(this.cboSeed.Text),
+                            int.Parse(this.cbDecimals.SelectedItem.ToString()));
+                        this.rTxtPrimeNumber.Text = psRandomNumberino.ToString();
+                        this.rTxtPrimeNumber.Tag = psRandomNumberino;
+                    }
+                    else
+                    {
+                        if (this.cbDecimals.SelectedItem == null)
+                            return;
+                        var seed = -1L;
+                        long.TryParse(this.cboSeed.Text, out seed);
+                        if (this.cboSeed.Text.Length <= 0 || seed <= 0)
+                            return;
+                        var psRandomNumberino = new ReallyBigNumber("1").GetRandomPrime(seed,
+                            (long) this.cbDecimals.SelectedItem);
+                        this.rTxtPrimeNumber.Text = psRandomNumberino.ToString();
+                        this.rTxtPrimeNumber.Tag = psRandomNumberino;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -87,11 +137,21 @@ namespace Assigment2
                     this.lbErrors.Text = "Parametres are not initialized";
                     hasErrors = true;
                 }
+                if (this.cboCryptoType.SelectedItem == null)
+                {
+                    errorProvider1.SetError(this.cboCryptoType, "Please pick a type");
+                    this.lbErrors.Text = "Please pick a type";
+                    hasErrors = true;
+                }
                 if (!hasErrors)
                 {
                     errorProvider1.Clear();
                     this.lbErrors.Text = "";
-                    var encryptedText = rsa.Encrpypt(rsa.N, this.txtInput.Text, rsa.VariableE);
+                    var encryptedText = string.Empty;
+                    encryptedText = string.Equals(this.cboCryptoType.SelectedItem.ToString(), "64 bit",
+                        StringComparison.CurrentCultureIgnoreCase)
+                        ? Rsa64.Encrypt(this.txtInput.Text, Rsa64.PublicKeyFactor, this.Rsa64.PrimeProductRoof)
+                        : rsa.EncrpytSingleLetterBlock(rsa.N, this.txtInput.Text, rsa.VariableE);
                     this.rTxtEncrpyted.Tag = encryptedText;
                     this.rTxtEncrpyted.Text = encryptedText.ToString();
                 }
@@ -228,13 +288,15 @@ namespace Assigment2
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            var info = Helper.GetCryptionInfo(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
+            var info =
+                Helper.GetCryptionInfo(
+                    System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
             rsa = new RSA()
             {
                 N = new ReallyBigNumber(info.N),
                 Phi = new ReallyBigNumber(info.Phi),
                 VariableE = new ReallyBigNumber(info.VariableE),
-                VariableD = new ReallyBigNumber(info.VariableE),
+                VariableD = new ReallyBigNumber(info.VariableD),
                 Prime2 = new ReallyBigNumber(info.Prime2),
                 Prime1 = new ReallyBigNumber(info.Prime1)
             };
@@ -248,18 +310,16 @@ namespace Assigment2
             this.txtPlaintext.Text = info.PlainText;
             this.txtCipherText.Text = info.PlainText;
             this.rTxtEncrpyted.Text = info.CipherText;
-
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                if(rTxtEncrpyted.Tag == null)
+                if (rTxtEncrpyted.Tag == null)
                     throw new NullReferenceException("rTxtEncrypted.Tag");
                 this.txtInput.Text = (string) rTxtEncrpyted.Tag;
-                this.txtCipherText.Text = (string)rTxtEncrpyted.Tag;
+                this.txtCipherText.Text = (string) rTxtEncrpyted.Tag;
             }
             catch (Exception ex)
             {
@@ -275,8 +335,8 @@ namespace Assigment2
             {
                 if (rTxtDecrypted.Tag == null)
                     throw new NullReferenceException("rTxtDecrypted.Tag");
-                this.txtInput.Text = (string)rTxtDecrypted.Tag;
-                this.txtPlaintext.Text = (string)rTxtEncrpyted.Tag;
+                this.txtInput.Text = (string) rTxtDecrypted.Tag;
+                this.txtPlaintext.Text = (string) rTxtEncrpyted.Tag;
             }
             catch (Exception ex)
             {
@@ -288,7 +348,7 @@ namespace Assigment2
 
         private void btnInsertPT_Click(object sender, EventArgs e)
         {
-            if(string.IsNullOrEmpty(this.txtPlaintext.Text))
+            if (string.IsNullOrEmpty(this.txtPlaintext.Text))
                 return;
             this.txtInput.Text = this.txtPlaintext.Text;
         }
@@ -319,13 +379,23 @@ namespace Assigment2
                     this.lbErrors.Text = "Parametres are not initialized";
                     hasErrors = true;
                 }
+                if (this.cboCryptoType.SelectedItem == null)
+                {
+                    errorProvider1.SetError(this.cboCryptoType, "Please pick a type");
+                    this.lbErrors.Text = "Please pick a type";
+                    hasErrors = true;
+                }
                 if (!hasErrors)
                 {
                     errorProvider1.Clear();
                     this.lbErrors.Text = "";
-                    var encryptedText = rsa.Decrpyt(rsa.N, this.txtInput.Text, rsa.VariableD);
-                    this.rTxtDecrypted.Tag = encryptedText;
-                    this.rTxtDecrypted.Text = encryptedText.ToString();
+                    var deCryptedText = string.Empty;
+                    deCryptedText = string.Equals(this.cboCryptoType.SelectedItem.ToString(), "64 bit",
+                        StringComparison.CurrentCultureIgnoreCase)
+                        ? Rsa64.Decrypt(this.txtInput.Text, Rsa64.PrivateKeyFactor, Rsa64.PrimeProductRoof)
+                        : rsa.DecryptSingleLetterBlock(rsa.N, this.txtInput.Text, rsa.VariableD);
+                    this.rTxtDecrypted.Tag = deCryptedText;
+                    this.rTxtDecrypted.Text = deCryptedText.ToString();
                 }
             }
             catch (Exception ex)
@@ -338,7 +408,6 @@ namespace Assigment2
             {
                 this.Cursor = Cursors.Default;
             }
-                
         }
     }
 }

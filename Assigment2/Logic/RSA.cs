@@ -83,20 +83,29 @@ namespace Assigment2.Logic
             return d;
         }
 
-        public string Encrpypt(ReallyBigNumber n, string plaintText, ReallyBigNumber e)
+        public string EncrpyptDoubleBlock(ReallyBigNumber n, string plaintText, ReallyBigNumber e)
         {
             if (n == null) throw new ArgumentNullException("n");
             if (plaintText == null) throw new ArgumentNullException("plaintText");
             if (e == null) throw new ArgumentNullException("e");
-
+            while (plaintText.Length % 2 != 0)
+            {
+                plaintText += " ";
+            }
             var sb = new StringBuilder();
             for (var i = 0; i < plaintText.Length - 1; i += 2)
             {
                 var encrpytedValues =
                     new ReallyBigNumber(plaintText[i].ToString(), true);
-                encrpytedValues.Addition(100);
+                //encrpytedValues.Addition(100);
+                if(encrpytedValues.Numbers.Count == 2)
+                    encrpytedValues.Numbers.Insert(0, 0L);
+                encrpytedValues.Numbers[0] += 1;
                 var encrpytedValues2 = new ReallyBigNumber(plaintText[i + 1].ToString(), true);
-                encrpytedValues2.Addition(100);
+                //encrpytedValues2.Addition(100);
+                if (encrpytedValues2.Numbers.Count == 2)
+                    encrpytedValues2.Numbers.Insert(0, 0L);
+                encrpytedValues2.Numbers[0] += 1;
                 encrpytedValues = ReallyBigNumber.ConCatBigNumber(encrpytedValues, encrpytedValues2);
                 //if(encrpytedValues.IsBigger(n.Numbers))
                 //    throw new Exception("PlainText is bigger than the Variable N");
@@ -106,7 +115,29 @@ namespace Assigment2.Logic
             return ReallyBigNumber.GetBinaries(sb.ToString());
         }
 
-        public string Decrpyt(Models.ReallyBigNumber n, string cipherText, Models.ReallyBigNumber d)
+        public string EncrpytSingleLetterBlock(ReallyBigNumber n, string plainText, ReallyBigNumber e)
+        {
+            if (n == null) throw new ArgumentNullException("n");
+            if (plainText == null) throw new ArgumentNullException("plainText");
+            if (e == null) throw new ArgumentNullException("e");
+           
+            var sb = new StringBuilder();
+            for (var i = 0; i < plainText.Length - 1; i++)
+            {
+                var encrpytedValues =
+                    new ReallyBigNumber(plainText[i].ToString(), true);
+                if (encrpytedValues.Numbers.Count == 2)
+                    encrpytedValues.Numbers.Insert(0, 0L);
+                encrpytedValues.Numbers[0] += 1;
+                encrpytedValues = encrpytedValues.ModPow(n, e);
+                sb.Append(encrpytedValues.ToString());
+            }
+            if (sb[0].Equals('0'))
+                sb.Remove(0, 1);
+            return ReallyBigNumber.GetBinaries(sb.ToString());
+        }
+
+        public string DecrpytDoubleBlock(Models.ReallyBigNumber n, string cipherText, Models.ReallyBigNumber d)
         {
             if (n == null) throw new ArgumentNullException("n");
             if (cipherText == null) throw new ArgumentNullException("cipherText");
@@ -140,6 +171,35 @@ namespace Assigment2.Logic
                 sb.Append(tempByte.ToString());
             }
             return ConvertToString(sb.ToString());
+        }
+
+        public string DecryptSingleLetterBlock(ReallyBigNumber n, string cipherText, ReallyBigNumber d)
+        {
+            if (n == null) throw new ArgumentNullException("n");
+            if (cipherText == null) throw new ArgumentNullException("cipherText");
+            if (d == null) throw new ArgumentNullException("d");
+            var sb = new StringBuilder();
+            while ((cipherText.Length) % 8 != 0)
+            {
+                cipherText = cipherText.Insert(0, "0");
+            }
+            for (int i = 0; i < cipherText.Length - 1; i += 8)
+            {
+                var bytes = ConvertBinaryToByte(cipherText.Substring(i, 8));
+                var decryptedNumbers = new ReallyBigNumber(bytes.ToString());
+                decryptedNumbers = decryptedNumbers.ModPow(n, d);
+               
+                if(decryptedNumbers.Numbers[0] == 0)
+                    decryptedNumbers.Numbers.RemoveAt(0);
+                decryptedNumbers.Numbers[0] -= 1;
+                var tempT = decryptedNumbers.Numbers[0].ToString() + decryptedNumbers.Numbers[1].ToString() +
+                            decryptedNumbers.Numbers[2].ToString();
+
+                Byte tempByte = 0;
+                Byte.TryParse(tempT, out tempByte);
+                sb.Append(tempByte.ToString());
+            }
+            return sb.ToString();
         }
 
         public byte ConvertBinaryToByte(string binary)

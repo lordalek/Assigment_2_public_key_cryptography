@@ -618,6 +618,7 @@ namespace Assigment2.Models
             if (a.Numbers.Count <= 0)
                 return this;
             var counter = new ReallyBigNumber("1");
+            counter.Subtraction(1);
             var returnPow = new ReallyBigNumber("0") {Numbers = Numbers.ToList()};
             while (a.IsBiggerOrEqualThan(counter.Numbers))
             {
@@ -648,10 +649,22 @@ namespace Assigment2.Models
         public static string GetBinaries(string numbers)
         {
             var sb = new StringBuilder();
-            foreach (var number in numbers)
+            //foreach (var number in numbers)
+            //{
+            //    var nu = int.Parse(number.ToString());
+            //    sb.Append(Convert.ToString(nu, 2));
+            //}
+            for (int i = 0; i < numbers.Length - 1; i += 2)
             {
-                sb.Append(Convert.ToString(number, 2));
+                var nu = int.Parse(numbers.Substring(i, 2));
+                var st = Convert.ToString(nu, 2);
+                while ((st.Length)%8 != 0)
+                {
+                    st = st.Insert(0, "0");
+                }
+                sb.Append(st);
             }
+            //sb.Append(Convert.ToInt32(numbers, 2).ToString());
             return sb.ToString();
         }
 

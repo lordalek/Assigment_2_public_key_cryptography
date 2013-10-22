@@ -34,7 +34,6 @@
             this.cbDecimals = new System.Windows.Forms.ComboBox();
             this.rTxtPrimeNumber = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtSeed = new System.Windows.Forms.TextBox();
             this.btnEncrypt = new System.Windows.Forms.Button();
             this.rTxtEncrpyted = new System.Windows.Forms.RichTextBox();
             this.txtInput = new System.Windows.Forms.TextBox();
@@ -71,6 +70,8 @@
             this.lbErrors = new System.Windows.Forms.Label();
             this.lbProgress = new System.Windows.Forms.Label();
             this.btnDecrypt = new System.Windows.Forms.Button();
+            this.cboCryptoType = new System.Windows.Forms.ComboBox();
+            this.cboSeed = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -116,16 +117,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(873, 82);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 13);
+            this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Seed (decimal)";
-            // 
-            // txtSeed
-            // 
-            this.txtSeed.Location = new System.Drawing.Point(873, 101);
-            this.txtSeed.Name = "txtSeed";
-            this.txtSeed.Size = new System.Drawing.Size(203, 20);
-            this.txtSeed.TabIndex = 5;
+            this.label1.Text = "Seed";
             // 
             // btnEncrypt
             // 
@@ -470,9 +464,29 @@
             this.btnDecrypt.UseVisualStyleBackColor = true;
             this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click);
             // 
+            // cboCryptoType
+            // 
+            this.cboCryptoType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboCryptoType.FormattingEnabled = true;
+            this.cboCryptoType.Location = new System.Drawing.Point(175, 34);
+            this.cboCryptoType.Name = "cboCryptoType";
+            this.cboCryptoType.Size = new System.Drawing.Size(121, 21);
+            this.cboCryptoType.TabIndex = 16;
+            // 
+            // cboSeed
+            // 
+            this.cboSeed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSeed.FormattingEnabled = true;
+            this.cboSeed.Location = new System.Drawing.Point(935, 74);
+            this.cboSeed.Name = "cboSeed";
+            this.cboSeed.Size = new System.Drawing.Size(141, 21);
+            this.cboSeed.TabIndex = 17;
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1088, 565);
+            this.Controls.Add(this.cboSeed);
+            this.Controls.Add(this.cboCryptoType);
             this.Controls.Add(this.btnDecrypt);
             this.Controls.Add(this.lbProgress);
             this.Controls.Add(this.lbErrors);
@@ -485,7 +499,6 @@
             this.Controls.Add(this.txtInput);
             this.Controls.Add(this.rTxtEncrpyted);
             this.Controls.Add(this.btnEncrypt);
-            this.Controls.Add(this.txtSeed);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.rTxtPrimeNumber);
             this.Controls.Add(this.cbDecimals);
@@ -508,7 +521,6 @@
         private System.Windows.Forms.ComboBox cbDecimals;
         private System.Windows.Forms.RichTextBox rTxtPrimeNumber;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtSeed;
         private System.Windows.Forms.Button btnEncrypt;
         private System.Windows.Forms.RichTextBox rTxtEncrpyted;
         private System.Windows.Forms.TextBox txtInput;
@@ -545,6 +557,8 @@
         private System.Windows.Forms.RichTextBox rTxtVE;
         private System.Windows.Forms.Label lbProgress;
         private System.Windows.Forms.Button btnDecrypt;
+        private System.Windows.Forms.ComboBox cboCryptoType;
+        private System.Windows.Forms.ComboBox cboSeed;
     }
 }
 

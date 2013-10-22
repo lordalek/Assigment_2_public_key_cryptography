@@ -54,6 +54,7 @@
     <Compile Include="Interfaces\IReallyBigNumber.cs" />
     <Compile Include="Interfaces\IRSAAlgorithm.cs" />
     <Compile Include="Logic\RSA.cs" />
+    <Compile Include="Logic\RSA64Bit.cs" />
     <Compile Include="Models\BlumBlumShubGenerator.cs" />
     <Compile Include="Logic\Helper.cs" />
     <Compile Include="Models\ReallyBigNumber.cs" />

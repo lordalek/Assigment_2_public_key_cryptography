@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Threading;
 using Assigment2.Models;
 using NUnit.Core;
 using NUnit.Framework;
@@ -319,7 +320,7 @@ namespace ModelTests
         public void TestEncrpyForByteValues()
         {
             var rsa = new RSA();
-            var bytes = rsa.Encrpypt(new ReallyBigNumber("1000"), "Ha", new ReallyBigNumber("3"));
+            var bytes = rsa.EncrpyptDoubleBlock(new ReallyBigNumber("1000"), "Ha", new ReallyBigNumber("3"));
 
         }
 
@@ -357,6 +358,16 @@ namespace ModelTests
         {
             var d = new RSA().DetermineDAs1AndSMallerThanPhi(new ReallyBigNumber("160"), new ReallyBigNumber("7"));
             Assert.IsTrue(d.Equals(new ReallyBigNumber("23")));
+        }
+
+        [Test]
+        public void GetD()
+        {
+            var N = new ReallyBigNumber("11023");
+            var E = new ReallyBigNumber("11");
+            var phi = new ReallyBigNumber("10800");
+            var d = new RSA().DetermineDAs1AndSMallerThanPhi(phi, E);
+            Assert.IsTrue(!d.Equals(new ReallyBigNumber("0")));
         }
     }
 }
