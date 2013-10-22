@@ -107,7 +107,8 @@ namespace Assigment2.Logic
                 var temp = long.Parse(byteValue[0].ToString());
                 temp -= LetterBuffer;
                 temp = ModPower(temp, publiKeyFactor, primeProduct);
-                sb.Append(Convert.ToString(temp, 2).PadLeft(8, '0'));
+                var bins = Convert.ToString(temp, 2).PadLeft(16, '0');
+                sb.Append(bins);
             }
             return sb.ToString();
         }
@@ -117,13 +118,13 @@ namespace Assigment2.Logic
             if (cipherText == null || cipherText.Length <= 0) throw new ArgumentNullException("cipherText");
             if (!isPrime(privateKeyFactor)) throw new ArgumentNullException("privateKeyFactor");
             var sb = new StringBuilder();
-            while (cipherText.Length%8 != 0)
+            while (cipherText.Length%16 != 0)
             {
                 cipherText = cipherText.Insert(0, "0");
             }
-            for (int i = 0; i < cipherText.Length - 1; i += 8)
+            for (int i = 0; i < cipherText.Length - 1; i += 16)
             {
-                var binaryString = cipherText.Substring(i, 8);
+                var binaryString = cipherText.Substring(i, 16);
                 var numbers = Convert.ToInt64(binaryString, 2);
                 numbers = ModPower(numbers, privateKeyFactor, primeProduct);
                 numbers += LetterBuffer;
@@ -136,7 +137,7 @@ namespace Assigment2.Logic
         public static long ModPower(long number, long power, long mod)
         {
             var tempNumber = number;
-            for (int i = 0; i < power - 1; i++)
+            for (int i = 1; i < power; i++)
             {
                 number = number*tempNumber;
                 number = number%mod;

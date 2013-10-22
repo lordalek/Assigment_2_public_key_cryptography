@@ -24,6 +24,9 @@ namespace Assigment2
             txtXMLPath.Text =
                 System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ??
                 string.Empty;
+            textBox9.Text =
+               System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ??
+               string.Empty;
             rsa = new RSA();
             Rsa64 = new RSA64Bit();
 
@@ -33,13 +36,14 @@ namespace Assigment2
 
         private void PopulateComboBox()
         {
-            this.cboCryptoType.Items.Add("64 bit");
+            this.cboCryptoType.Items.Add("64 bit, only works with letters");
             this.cboCryptoType.Items.Add("Unliminted bit, not working");
         }
 
         private void PopulateMetaData()
         {
             btnLoad_Click(null, null);
+            btnLoad64_Click(null, null);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -130,12 +134,21 @@ namespace Assigment2
                     this.lbErrors.Text = "Blank input not allowed";
                     hasErrors = true;
                 }
-                if (rsa.N == null || rsa.Phi == null || rsa.Prime1 == null || rsa.Prime1 == null ||
-                    rsa.VariableD == null || rsa.VariableE == null)
+                if (this.cboCryptoType.SelectedText.Equals("64 bit") && (Rsa64.PrivateKeyFactor <= 0 || Rsa64.Totient <= 0 || Rsa64.PublicKeyFactor <= 0 || Rsa64.PrimeProductRoof <= 0))
                 {
-                    errorProvider1.SetError(this.btnCalculate, "Parametres are not initialized");
+                    errorProvider1.SetError(this.btnCalc64, "Parametres are not initialized");
                     this.lbErrors.Text = "Parametres are not initialized";
                     hasErrors = true;
+                }
+                else
+                {
+                    if (rsa.N == null || rsa.Phi == null || rsa.Prime1 == null || rsa.Prime1 == null ||
+                   rsa.VariableD == null || rsa.VariableE == null)
+                    {
+                        errorProvider1.SetError(this.btnCalculate, "Parametres are not initialized");
+                        this.lbErrors.Text = "Parametres are not initialized";
+                        hasErrors = true;
+                    }
                 }
                 if (this.cboCryptoType.SelectedItem == null)
                 {
@@ -191,18 +204,18 @@ namespace Assigment2
                 if (txtXMLPath.Text.Length <= 0)
                     return;
 
-                var info = new RsaInfo()
+                var info = new Rsa64Info()
                 {
-                    N = rsa.N.ToString(),
-                    Phi = rsa.Phi.ToString(),
-                    Prime2 = txtPrime1.Text,
-                    Prime1 = txtPrime2.Text,
-                    VariableE = rsa.VariableE.ToString(),
-                    VariableD = rsa.VariableD.ToString(),
                     CipherText = txtCipherText.Text ?? string.Empty,
-                    PlainText = txtPlaintext.Text ?? string.Empty
+                    PlainText = txtPlaintext.Text ?? string.Empty,
+                    PrimeB = txtPrime2.Text ?? string.Empty,
+                    PrimeA = txtPrime1.Text ?? string.Empty,
+                    PrK = txtPrK.Text ?? string.Empty,
+                    PrimeProduct = txtPrimeProduct.Text ?? string.Empty,
+                    PuK = txtPK.Text ?? string.Empty,
+                    Totient = txtTeution.Text ?? string.Empty
                 };
-                Helper.SaveCryptionInfo(info, txtXMLPath.Text);
+                Helper.SaveCryptionInfo64(info, txtXMLPath.Text);
             }
             catch (Exception ex)
             {
@@ -289,8 +302,9 @@ namespace Assigment2
         private void btnLoad_Click(object sender, EventArgs e)
         {
             var info =
-                Helper.GetCryptionInfo(
-                    System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
+                Helper.GetCryptionInfo(txtXMLPath.Text.Length <= 0
+                    ? System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)
+                    : txtXMLPath.Text);
             rsa = new RSA()
             {
                 N = new ReallyBigNumber(info.N),
@@ -408,6 +422,134 @@ namespace Assigment2
             {
                 this.Cursor = Cursors.Default;
             }
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void btnCalc64_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                errorProvider1.Clear();
+                this.lbErrors.Text = "";
+                this.Cursor = Cursors.WaitCursor;
+                var hasErrors = false;
+                if (this.txt64Prim1.Text.Length <= 0 || this.txt64Prim2.Text.Length <= 0)
+                {
+                    errorProvider1.SetError(this.txt64Prim1, "Primes are not initialized");
+                    errorProvider1.SetError(this.txt64Prim2, "Primes are not initialized");
+                    this.lbErrors.Text += "Primes are not initialized. ";
+                    hasErrors = true;
+                }
+                if (this.txt64Prim1.Text.Length > 0)
+                {
+                    if (!RSA64Bit.isPrime(long.Parse(txt64Prim1.Text)))
+                    {
+                        errorProvider1.SetError(this.txt64Prim1, "Prime #1 is not a prime");
+                        this.lbErrors.Text += "Prime #1 is not a prime. ";
+                        hasErrors = true;
+                    }
+                }
+                if (this.txt64Prim2.Text.Length > 0)
+                {
+                    if (!RSA64Bit.isPrime(long.Parse(txt64Prim2.Text)))
+                    {
+                        errorProvider1.SetError(this.txt64Prim2, "Prime #2 is not a prime");
+                        this.lbErrors.Text += "Prime #2 is not a prime. ";
+                        hasErrors = true;
+                    }
+                }
+                if (this.txt64Prim2.Text.Length > 0 && this.txt64Prim1.Text.Length > 0 && !hasErrors)
+                {
+                    if (txt64Prim2.Text.Equals(txt64Prim1.Text))
+                    {
+                        errorProvider1.SetError(this.btnCalc64, "Primes may not be equal");
+                        this.lbErrors.Text += "Primes may not be equal. ";
+                        hasErrors = true;
+                    }
+                }
+                if (!hasErrors)
+                {
+                    errorProvider1.Clear();
+                    this.lbErrors.Text = "";
+                    Rsa64 = new RSA64Bit()
+                    {
+                        PrimeA = long.Parse(txtPrime1.Text),
+                        PrimeB = long.Parse(txtPrime2.Text)
+                    };
+                    Rsa64.SetPrimeProductRood(Rsa64.PrimeA, Rsa64.PrimeB);
+                    Rsa64.SetTotient(Rsa64.PrimeA, Rsa64.PrimeB);
+                    Rsa64.SetPublicKeyFactor(Rsa64.Totient);
+                    Rsa64.SetPrivateKeyFactor(Rsa64.PublicKeyFactor, Rsa64.Totient);
+
+                    txtPrimeProduct.Text = Rsa64.PrimeProductRoof.ToString();
+                    txtTeution.Text = Rsa64.Totient.ToString();
+                    txtPK.Text = Rsa64.PublicKeyFactor.ToString();
+                    txtPrK.Text = Rsa64.PrivateKeyFactor.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to calculate. Error: " + Environment.NewLine + ex.Message, "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+
+        private void textBox9_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var fileDialog = new FolderBrowserDialog();
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                    textBox9.Text = fileDialog.SelectedPath;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to save data to field.. Error: " + Environment.NewLine + ex.Message, "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnLoad64_Click(object sender, EventArgs e)
+        {
+            var info =
+                Helper.GetCryption6Rsa64Info(txtXMLPath.Text.Length <= 0
+                    ? System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)
+                    : txtXMLPath.Text);
+
+            Rsa64 = new RSA64Bit()
+            {
+                PrimeA = long.Parse(info.PrimeA),
+                PrimeB = long.Parse(info.PrimeB),
+                PrimeProductRoof = long.Parse(info.PrimeProduct),
+                Totient = long.Parse(info.Totient),
+                PrivateKeyFactor = long.Parse(info.PrK),
+                PublicKeyFactor = long.Parse(info.PuK)
+            };
+
+            txt64Prim1.Text = info.PrimeA;
+            txt64Prim2.Text = info.PrimeB;
+            txtTeution.Text = info.Totient;
+            txtPrK.Text = info.PrK;
+            txtPK.Text = info.PuK;
+            txtPrimeProduct.Text = info.PrimeProduct;
+
+            this.rTxtDecrypted.Text = info.PlainText;
+            this.txtPlaintext.Text = info.PlainText;
+            this.txtCipherText.Text = info.PlainText;
+            this.rTxtEncrpyted.Text = info.CipherText;
         }
     }
 }
