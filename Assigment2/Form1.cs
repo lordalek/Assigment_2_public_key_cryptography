@@ -134,7 +134,7 @@ namespace Assigment2
                     this.lbErrors.Text = "Blank input not allowed";
                     hasErrors = true;
                 }
-                if (this.cboCryptoType.SelectedText.Equals("64 bit") && (Rsa64.PrivateKeyFactor <= 0 || Rsa64.Totient <= 0 || Rsa64.PublicKeyFactor <= 0 || Rsa64.PrimeProductRoof <= 0))
+                if (this.cboCryptoType.SelectedText.Equals("64 bit, only works with letters") && (Rsa64.PrivateKeyFactor <= 0 || Rsa64.Totient <= 0 || Rsa64.PublicKeyFactor <= 0 || Rsa64.PrimeProductRoof <= 0))
                 {
                     errorProvider1.SetError(this.btnCalc64, "Parametres are not initialized");
                     this.lbErrors.Text = "Parametres are not initialized";
@@ -161,7 +161,7 @@ namespace Assigment2
                     errorProvider1.Clear();
                     this.lbErrors.Text = "";
                     var encryptedText = string.Empty;
-                    encryptedText = string.Equals(this.cboCryptoType.SelectedItem.ToString(), "64 bit",
+                    encryptedText = string.Equals(this.cboCryptoType.SelectedItem.ToString(), "64 bit, only works with letters",
                         StringComparison.CurrentCultureIgnoreCase)
                         ? Rsa64.Encrypt(this.txtInput.Text, Rsa64.PublicKeyFactor, this.Rsa64.PrimeProductRoof)
                         : rsa.EncrpytSingleLetterBlock(rsa.N, this.txtInput.Text, rsa.VariableE);
@@ -206,8 +206,8 @@ namespace Assigment2
 
                 var info = new Rsa64Info()
                 {
-                    CipherText = txtCipherText.Text ?? string.Empty,
-                    PlainText = txtPlaintext.Text ?? string.Empty,
+                    CipherText = rTxtEncrpyted.Text ?? string.Empty,
+                    PlainText = rTxtDecrypted.Text ?? string.Empty,
                     PrimeB = txtPrime2.Text ?? string.Empty,
                     PrimeA = txtPrime1.Text ?? string.Empty,
                     PrK = txtPrK.Text ?? string.Empty,
@@ -404,7 +404,7 @@ namespace Assigment2
                     errorProvider1.Clear();
                     this.lbErrors.Text = "";
                     var deCryptedText = string.Empty;
-                    deCryptedText = string.Equals(this.cboCryptoType.SelectedItem.ToString(), "64 bit",
+                    deCryptedText = string.Equals(this.cboCryptoType.SelectedItem.ToString(), "64 bit, only works with letters",
                         StringComparison.CurrentCultureIgnoreCase)
                         ? Rsa64.Decrypt(this.txtInput.Text, Rsa64.PrivateKeyFactor, Rsa64.PrimeProductRoof)
                         : rsa.DecryptSingleLetterBlock(rsa.N, this.txtInput.Text, rsa.VariableD);
