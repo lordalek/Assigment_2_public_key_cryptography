@@ -105,7 +105,7 @@ namespace Assigment2.Logic
                 var byteValue = Encoding.UTF8.GetBytes(letter.ToString());
                 byteValue = byteValue.Reverse().ToArray();
                 var temp = long.Parse(byteValue[0].ToString());
-                temp -= LetterBuffer;
+                //temp -= LetterBuffer;
                 temp = ModPower(temp, publiKeyFactor, primeProduct);
                 var bins = Convert.ToString(temp, 2).PadLeft(16, '0');
                 sb.Append(bins);
@@ -127,7 +127,7 @@ namespace Assigment2.Logic
                 var binaryString = cipherText.Substring(i, 16);
                 var numbers = Convert.ToInt64(binaryString, 2);
                 numbers = ModPower(numbers, privateKeyFactor, primeProduct);
-                numbers += LetterBuffer;
+                //numbers += LetterBuffer;
                 var letter = Encoding.UTF8.GetString(new[] {byte.Parse(numbers.ToString())});
                 sb.Append(letter);
             }
